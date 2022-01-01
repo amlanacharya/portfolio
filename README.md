@@ -1,6 +1,6 @@
 # Demo Enterprise Projects
 
-This repository contains demo versions of larger enterprise solutions, rebuilt in a simplified form for open sharing.  
+This repository contains demo versions of larger enterprise solutions, rebuilt in a simplified form for open sharing.
 The goal is to showcase core functionality, design patterns, and problem‑solving approaches **without including any proprietary or confidential details**.
 
 ## Highlights
@@ -10,9 +10,9 @@ The goal is to showcase core functionality, design patterns, and problem‑solvi
 - Safe for public sharing while inspired by real-world projects
 
 ## Purpose
-These demos serve as **proofs of concept** and portfolio examples.  
+These demos serve as **proofs of concept** and portfolio examples.
 They illustrate how complex enterprise challenges can be broken down into smaller, reusable components, making them easier to understand and adapt.
 
 ## Note
-This repository is intended for demonstration and learning purposes only.  
+This repository is intended for demonstration and learning purposes only.
 It does not contain production code or sensitive business logic.
