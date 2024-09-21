@@ -190,7 +190,7 @@ def mask_text_in_image(image_content, response, pan_numbers, aadhaar_numbers):
     return buffer.tobytes()
 
 # Main content
-st.title("🛡️ Privacy Shield")
+st.title("🛡️ MaskMate Privacy Shield")
 st.markdown("<p class='info-box'>Protect your sensitive information with ease.</p>", unsafe_allow_html=True)
 
 col1, col2 = st.columns([2, 1])
@@ -204,7 +204,7 @@ with col1:
 with col2:
     st.markdown("### How it works")
     st.markdown("1. Upload images or PDFs")
-    st.markdown("2. We detect sensitive info")
+    st.markdown("2. We detect and mask sensitive KYC related info")
     st.markdown("3. Download protected versions")
 
 if uploaded_files:
@@ -396,5 +396,5 @@ if uploaded_files:
             st.error(f"Unsupported file type: {file_extension}")
 
 # Footer
-st.markdown("<div class='footer'>Made with ❤️<br>© 1Amlan 2024 All rights reserved</div>",
+st.markdown("<div class='footer'>Made with ❤️<br>© Amlan 2024 All rights reserved</div>",
             unsafe_allow_html=True)
