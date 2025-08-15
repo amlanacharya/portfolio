@@ -1,0 +1,138 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: "Fact table for order analysis"
+    columns:
+      - name: order_id
+        description: "Primary key - unique identifier for the order"
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "Foreign key to dim_customers"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customers')
+              field: customer_id
+      - name: order_date_key
+        description: "Foreign key to dim_date"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+      - name: order_date
+        description: "Timestamp when the order was placed"
+        tests:
+          - not_null
+      - name: order_status
+        description: "Current status of the order"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['delivered', 'shipped', 'processing', 'canceled', 'unavailable']
+      - name: order_total
+        description: "Total amount paid for the order"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 10000
+      - name: payment_methods
+        description: "Array of payment methods used for the order"
+      - name: item_count
+        description: "Number of items in the order"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 1
+              max_value: 100
+      - name: items_price
+        description: "Sum of item prices before freight"
+        tests:
+          - not_null
+      - name: freight_value
+        description: "Total freight value for the order"
+        tests:
+          - not_null
+      - name: delivery_time_days
+        description: "Number of days between order and delivery"
+      - name: is_delayed
+        description: "Flag indicating if the order was delivered after the estimated date"
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "abs(order_total - (items_price + freight_value)) < 0.01"
+          where: "order_status != 'canceled'"
+
+  - name: fct_order_items
+    description: "Fact table for order item analysis"
+    columns:
+      - name: order_id
+        description: "Foreign key to fct_orders"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('fct_orders')
+              field: order_id
+      - name: order_item_id
+        description: "Order item sequence number"
+        tests:
+          - not_null
+      - name: product_id
+        description: "Foreign key to dim_products"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_products')
+              field: product_id
+      - name: seller_id
+        description: "Foreign key to dim_sellers"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_sellers')
+              field: seller_id
+      - name: customer_id
+        description: "Foreign key to dim_customers"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customers')
+              field: customer_id
+      - name: order_date_key
+        description: "Foreign key to dim_date"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+      - name: shipping_limit_date
+        description: "Deadline for shipping the order item"
+      - name: price
+        description: "Price of the order item"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: freight_value
+        description: "Freight value for the order item"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: total_item_value
+        description: "Total value of the order item (price + freight)"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: product_category_name
+        description: "Category name of the product"
+      - name: seller_city
+        description: "City of the seller"
+      - name: seller_state
+        description: "State of the seller"
+      - name: is_same_state_purchase
+        description: "Flag indicating if the customer and seller are in the same state"

@@ -1,0 +1,364 @@
+version: 2
+
+models:
+  - name: customer_churn_features
+    description: "Features for predicting customer churn, defined as customers who haven't ordered in 90+ days"
+    columns:
+      - name: customer_id
+        description: "Unique identifier for a customer"
+        tests:
+          - unique
+          - not_null
+      - name: customer_unique_id
+        description: "Unique identifier that represents a customer across the platform"
+      - name: customer_city
+        description: "Customer city name"
+      - name: customer_state
+        description: "Customer state"
+      - name: is_churned
+        description: "Target variable: 1 if customer has churned (no orders in 90+ days), 0 otherwise"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1]
+      - name: days_since_last_order
+        description: "Number of days since the customer's last order"
+      - name: order_count
+        description: "Total number of orders placed by the customer"
+      - name: total_order_value
+        description: "Total value of all orders placed by the customer"
+      - name: avg_order_value
+        description: "Average order value for the customer"
+      - name: customer_lifetime_value
+        description: "Calculated lifetime value of the customer"
+      - name: canceled_order_count
+        description: "Number of orders canceled by the customer"
+      - name: cancel_rate
+        description: "Ratio of canceled orders to total orders"
+      - name: total_events
+        description: "Total number of clickstream events"
+      - name: total_sessions
+        description: "Total number of web sessions"
+      - name: active_days
+        description: "Number of days with website activity"
+      - name: page_view_count
+        description: "Number of page views"
+      - name: product_view_count
+        description: "Number of product page views"
+      - name: add_to_cart_count
+        description: "Number of add-to-cart events"
+      - name: search_count
+        description: "Number of search events"
+      - name: total_app_events
+        description: "Total number of app events"
+      - name: total_app_sessions
+        description: "Total number of app sessions"
+      - name: app_active_days
+        description: "Number of days with app activity"
+      - name: total_app_time_seconds
+        description: "Total time spent in the app (seconds)"
+      - name: cart_to_order_conversion_rate
+        description: "Ratio of orders to add-to-cart events"
+      - name: view_to_cart_conversion_rate
+        description: "Ratio of add-to-cart events to product views"
+      - name: total_tickets
+        description: "Total number of support tickets"
+      - name: high_priority_tickets
+        description: "Number of high or urgent priority tickets"
+      - name: avg_satisfaction_rating
+        description: "Average satisfaction rating for support tickets"
+      - name: total_reviews
+        description: "Total number of reviews submitted"
+      - name: avg_review_score
+        description: "Average review score (1-5)"
+      - name: positive_reviews
+        description: "Number of positive reviews (4-5)"
+      - name: negative_reviews
+        description: "Number of negative reviews (1-2)"
+
+  - name: customer_ltv_features
+    description: "Features for predicting customer lifetime value"
+    columns:
+      - name: customer_id
+        description: "Unique identifier for a customer"
+        tests:
+          - unique
+          - not_null
+      - name: customer_unique_id
+        description: "Unique identifier that represents a customer across the platform"
+      - name: customer_city
+        description: "Customer city name"
+      - name: customer_state
+        description: "Customer state"
+      - name: current_ltv
+        description: "Current lifetime value of the customer (target variable for prediction)"
+        tests:
+          - not_null
+      - name: recency
+        description: "Days since last order (recency component of RFM)"
+      - name: frequency
+        description: "Number of orders (frequency component of RFM)"
+      - name: monetary
+        description: "Average order value (monetary component of RFM)"
+      - name: order_count
+        description: "Total number of orders placed by the customer"
+      - name: delivered_order_count
+        description: "Number of orders successfully delivered to the customer"
+      - name: canceled_order_count
+        description: "Number of orders canceled by the customer"
+      - name: cancel_rate
+        description: "Ratio of canceled orders to total orders"
+      - name: days_as_customer
+        description: "Number of days since first order"
+
+  - name: customer_segmentation_features
+    description: "Features for customer segmentation analysis"
+    columns:
+      - name: customer_id
+        description: "Unique identifier for a customer"
+        tests:
+          - unique
+          - not_null
+      - name: customer_unique_id
+        description: "Unique identifier that represents a customer across the platform"
+      - name: customer_city
+        description: "Customer city name"
+      - name: customer_state
+        description: "Customer state"
+      - name: recency_days
+        description: "Days since last order (recency component of RFM)"
+      - name: frequency
+        description: "Number of orders (frequency component of RFM)"
+      - name: monetary_value
+        description: "Average order value (monetary component of RFM)"
+      - name: engagement_level
+        description: "Customer engagement level (high, medium, low, none)"
+        tests:
+          - accepted_values:
+              values: ['high', 'medium', 'low', 'none']
+      - name: channel_preference
+        description: "Preferred channel (app, web, omnichannel, unknown)"
+        tests:
+          - accepted_values:
+              values: ['app', 'web', 'omnichannel', 'unknown']
+      - name: preferred_device
+        description: "Most frequently used device"
+      - name: purchase_value_segment
+        description: "Segment based on purchase value (high_value, medium_value, low_value)"
+        tests:
+          - accepted_values:
+              values: ['high_value', 'medium_value', 'low_value']
+      - name: purchase_frequency_segment
+        description: "Segment based on purchase frequency (frequent, regular, occasional)"
+        tests:
+          - accepted_values:
+              values: ['frequent', 'regular', 'occasional']
+      - name: loyalty_segment
+        description: "Loyalty segment (loyal, potential_loyal, churned_loyal, new_customer, churned_new)"
+        tests:
+          - accepted_values:
+              values: ['loyal', 'potential_loyal', 'churned_loyal', 'new_customer', 'churned_new']
+      - name: satisfaction_segment
+        description: "Satisfaction segment (highly_satisfied, satisfied, unsatisfied, unknown)"
+        tests:
+          - accepted_values:
+              values: ['highly_satisfied', 'satisfied', 'unsatisfied', 'unknown']
+      - name: support_segment
+        description: "Support needs segment (self_sufficient, normal_support, high_support)"
+        tests:
+          - accepted_values:
+              values: ['self_sufficient', 'normal_support', 'high_support']
+      - name: order_count
+        description: "Total number of orders placed by the customer"
+      - name: total_order_value
+        description: "Total value of all orders placed by the customer"
+      - name: avg_order_value
+        description: "Average order value for the customer"
+      - name: days_since_last_order
+        description: "Number of days since the customer's last order"
+      - name: total_events
+        description: "Total number of clickstream events"
+      - name: total_app_events
+        description: "Total number of app events"
+      - name: cart_to_order_conversion_rate
+        description: "Ratio of orders to add-to-cart events"
+      - name: avg_review_score
+        description: "Average review score (1-5)"
+      - name: total_tickets
+        description: "Total number of support tickets"
+
+  - name: product_recommendation_features
+    description: "Features for product recommendation systems"
+    columns:
+      - name: customer_id
+        description: "Customer identifier"
+        tests:
+          - not_null
+      - name: product_id
+        description: "Product identifier"
+        tests:
+          - not_null
+      - name: product_category_name_english
+        description: "Product category name in English"
+      - name: purchase_count
+        description: "Number of times the customer purchased this product"
+      - name: total_spent
+        description: "Total amount spent by the customer on this product"
+      - name: days_since_last_purchase
+        description: "Number of days since the customer last purchased this product"
+      - name: category_rank
+        description: "Rank of this category in the customer's preferences"
+      - name: copurchase_count
+        description: "Number of times this product was purchased with other products"
+      - name: view_count
+        description: "Number of times the customer viewed this product"
+      - name: cart_count
+        description: "Number of times the customer added this product to cart"
+      - name: purchase_to_view_ratio
+        description: "Ratio of purchases to views for this product"
+      - name: similarity_score
+        description: "Similarity score based on customer purchase patterns"
+
+  - name: customer_churn_features_v2
+    description: >
+      Enhanced features for predicting customer churn, with additional behavioral and temporal patterns.
+      This model is designed to provide a comprehensive view of customer behavior that can be used to
+      predict the likelihood of churn, defined as no orders in the past 90 days.
+    columns:
+      - name: customer_id
+        description: "Unique identifier for a customer"
+        tests:
+          - unique
+          - not_null
+      - name: is_churned
+        description: >
+          Target variable: 1 if customer has churned (no orders in 90+ days), 0 otherwise.
+          This is the variable we're trying to predict with our model.
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1]
+      - name: days_since_last_order
+        description: >
+          Number of days since the customer's last order. This is a key recency metric
+          and typically has a strong correlation with churn probability. The longer a customer
+          has been inactive, the more likely they are to have churned.
+          Expected range: 0 to several hundred days.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: true
+          - correlation_with_target:
+              target_column: is_churned
+              min_correlation: 0.1
+              absolute: true
+          - feature_variance:
+              min_variance: 0.1
+      - name: order_count
+        description: >
+          Total number of orders placed by the customer. This frequency metric
+          is often negatively correlated with churn - customers with more orders
+          tend to be more loyal.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: false
+      - name: total_order_value
+        description: >
+          Total amount spent by the customer across all orders. This monetary metric
+          can indicate customer value and investment in the platform.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: false
+      - name: avg_order_value
+        description: >
+          Average value of customer orders. Higher average order values may indicate
+          different customer segments with varying churn patterns.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: true
+      - name: order_frequency_last_90_days
+        description: >
+          Number of orders placed in the last 90 days. This recency metric
+          captures recent engagement and is highly predictive of churn.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: false
+          - correlation_with_target:
+              target_column: is_churned
+              min_correlation: 0.1
+              absolute: true
+          - feature_variance:
+              min_variance: 0.1
+      - name: order_frequency_last_30_days
+        description: >
+          Number of orders placed in the last 30 days. This very recent activity
+          metric can identify customers who are currently active vs. those who may
+          be in the process of churning.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: false
+      - name: order_value_trend
+        description: >
+          Ratio of average order value in last 3 orders compared to all-time average.
+          Values > 1 indicate increasing order values, while values < 1 indicate decreasing
+          order values. This trend can signal changing customer engagement.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: true
+      - name: days_between_first_second_order
+        description: >
+          Number of days between the customer's first and second orders. This metric
+          can indicate how quickly a customer was converted to a repeat purchaser.
+          Null if the customer has made fewer than 2 orders.
+      - name: product_category_diversity
+        description: >
+          Number of unique product categories purchased by the customer. Higher diversity
+          may indicate broader engagement with the platform and potentially lower churn risk.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: false
+      - name: has_returned_item
+        description: >
+          Boolean indicating if the customer has ever returned an item. Returns may
+          indicate negative experiences that could increase churn risk.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+      - name: refund_rate
+        description: >
+          Percentage of orders that resulted in refunds. Higher refund rates may
+          indicate customer dissatisfaction and increased churn risk.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+              strictly_between: false
+          - correlation_with_target:
+              target_column: is_churned
+              min_correlation: 0.05
+              absolute: true
+      - name: weekend_shopper_ratio
+        description: >
+          Percentage of orders placed on weekends. This behavioral metric can
+          identify different customer segments with potentially different churn patterns.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+              strictly_between: false
+      - name: evening_shopper_ratio
+        description: >
+          Percentage of orders placed in evening hours (6 PM - midnight). This behavioral
+          metric can identify different customer segments with potentially different churn patterns.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+              strictly_between: false

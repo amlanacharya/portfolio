@@ -1,0 +1,415 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: "Cleaned and standardized customer data from the raw source"
+    columns:
+      - name: customer_id
+        description: "Unique identifier for a customer"
+        tests:
+          - unique
+          - not_null
+      - name: customer_unique_id
+        description: "Unique identifier that represents a customer across the platform"
+        tests:
+          - not_null
+      - name: customer_zip_code_prefix
+        description: "First digits of customer zip code"
+      - name: customer_city
+        description: "Customer city name"
+      - name: customer_state
+        description: "Customer state"
+
+  - name: stg_orders
+    description: "Cleaned and standardized order data from the raw source"
+    columns:
+      - name: order_id
+        description: "Unique identifier of the order"
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "Foreign key to the customer dataset"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+      - name: order_status
+        description: "Current status of the order"
+        tests:
+          - accepted_values:
+              values: ['delivered', 'shipped', 'processing', 'canceled', 'unavailable', 'created', 'approved', 'invoiced']
+      - name: order_purchase_timestamp
+        description: "Timestamp when the purchase was made"
+      - name: order_approved_at
+        description: "Timestamp when the payment was approved"
+      - name: order_delivered_carrier_date
+        description: "Timestamp when the order was handed to the logistics partner"
+      - name: order_delivered_customer_date
+        description: "Timestamp when the order was delivered to the customer"
+      - name: order_estimated_delivery_date
+        description: "Estimated delivery date provided to customer"
+
+  - name: stg_order_items
+    description: "Cleaned and standardized order item data from the raw source"
+    columns:
+      - name: order_id
+        description: "Order identifier"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_orders')
+              field: order_id
+      - name: order_item_id
+        description: "Sequential number identifying order items within an order"
+        tests:
+          - not_null
+      - name: product_id
+        description: "Product identifier"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_products')
+              field: product_id
+      - name: seller_id
+        description: "Seller identifier"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_sellers')
+              field: seller_id
+      - name: shipping_limit_date
+        description: "Delivery time limit"
+      - name: price
+        description: "Item price"
+        tests:
+          - not_null
+      - name: freight_value
+        description: "Item freight value"
+        tests:
+          - not_null
+
+  - name: stg_products
+    description: "Cleaned and standardized product data from the raw source"
+    columns:
+      - name: product_id
+        description: "Unique identifier for a product"
+        tests:
+          - unique
+          - not_null
+      - name: product_category_name
+        description: "Category name in original language"
+      - name: product_category_name_english
+        description: "Category name in English"
+      - name: product_length_cm
+        description: "Product length in centimeters"
+      - name: product_height_cm
+        description: "Product height in centimeters"
+      - name: product_width_cm
+        description: "Product width in centimeters"
+      - name: product_weight_g
+        description: "Product weight in grams"
+
+  - name: stg_sellers
+    description: "Cleaned and standardized seller data from the raw source"
+    columns:
+      - name: seller_id
+        description: "Unique identifier for a seller"
+        tests:
+          - unique
+          - not_null
+      - name: seller_zip_code_prefix
+        description: "First digits of seller zip code"
+      - name: seller_city
+        description: "Seller city name"
+      - name: seller_state
+        description: "Seller state"
+
+  - name: stg_payments
+    description: "Cleaned and standardized payment data from the raw source"
+    columns:
+      - name: order_id
+        description: "Order identifier"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_orders')
+              field: order_id
+      - name: payment_sequential
+        description: "Sequential payment number"
+        tests:
+          - not_null
+      - name: payment_type
+        description: "Payment method used"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['credit_card', 'boleto', 'voucher', 'debit_card', 'not_defined']
+      - name: payment_installments
+        description: "Number of installments for payment"
+        tests:
+          - not_null
+      - name: payment_value
+        description: "Payment amount"
+        tests:
+          - not_null
+
+  - name: stg_reviews
+    description: "Cleaned and standardized customer review data from the raw source"
+    columns:
+      - name: review_id
+        description: "Unique identifier for a review"
+        tests:
+          - unique
+          - not_null
+      - name: order_id
+        description: "Order identifier"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_orders')
+              field: order_id
+      - name: review_score
+        description: "Review score (1-5)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1, 2, 3, 4, 5]
+      - name: review_comment_title
+        description: "Review title"
+      - name: review_comment_message
+        description: "Review message"
+      - name: review_creation_date
+        description: "Date when the review was created"
+        tests:
+          - not_null
+      - name: review_answer_timestamp
+        description: "Timestamp when the review was answered"
+
+  - name: stg_clickstream
+    description: "Cleaned and standardized website clickstream data from the raw source"
+    columns:
+      - name: event_id
+        description: "Unique identifier for the event"
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "Customer identifier"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+      - name: event_timestamp
+        description: "Timestamp of the event"
+        tests:
+          - not_null
+      - name: event_type
+        description: "Type of event (page_view, add_to_cart, etc.)"
+        tests:
+          - not_null
+      - name: page_type
+        description: "Type of page (product, category, checkout, etc.)"
+      - name: device
+        description: "Device used (desktop, mobile, tablet)"
+      - name: browser
+        description: "Browser used"
+      - name: operating_system
+        description: "Operating system"
+      - name: app_version
+        description: "App version if applicable"
+      - name: session_id
+        description: "Session identifier"
+        tests:
+          - not_null
+      - name: event_details
+        description: "JSON with event-specific details"
+
+  - name: stg_support_tickets
+    description: "Cleaned and standardized customer support ticket data from the raw source"
+    columns:
+      - name: ticket_id
+        description: "Unique identifier for the support ticket"
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "Customer identifier"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+      - name: order_id
+        description: "Related order if applicable"
+        tests:
+          - relationships:
+              to: ref('stg_orders')
+              field: order_id
+      - name: created_at
+        description: "Ticket creation timestamp"
+        tests:
+          - not_null
+      - name: category
+        description: "Support ticket category"
+        tests:
+          - not_null
+      - name: channel
+        description: "Support channel (phone, email, chat, etc.)"
+        tests:
+          - not_null
+      - name: status
+        description: "Ticket status"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['open', 'in_progress', 'resolved', 'closed', 'escalated']
+      - name: resolved_at
+        description: "Resolution timestamp"
+      - name: satisfaction_rating
+        description: "Customer satisfaction rating (1-5)"
+        tests:
+          - accepted_values:
+              values: [1, 2, 3, 4, 5]
+      - name: priority
+        description: "Ticket priority"
+        tests:
+          - accepted_values:
+              values: ['low', 'medium', 'high', 'urgent']
+
+  - name: stg_marketing_campaigns
+    description: "Cleaned and standardized marketing campaign data from the raw source"
+    columns:
+      - name: campaign_id
+        description: "Unique identifier for the campaign"
+        tests:
+          - unique
+          - not_null
+      - name: campaign_name
+        description: "Campaign name"
+        tests:
+          - not_null
+      - name: channel
+        description: "Marketing channel"
+        tests:
+          - not_null
+      - name: campaign_type
+        description: "Type of campaign"
+        tests:
+          - not_null
+      - name: start_date
+        description: "Campaign start date"
+        tests:
+          - not_null
+      - name: end_date
+        description: "Campaign end date"
+        tests:
+          - not_null
+      - name: budget
+        description: "Campaign budget"
+      - name: impressions
+        description: "Number of impressions"
+      - name: clicks
+        description: "Number of clicks"
+      - name: conversions
+        description: "Number of conversions"
+      - name: revenue
+        description: "Revenue generated"
+      - name: target_audience
+        description: "Target audience"
+      - name: discount_percentage
+        description: "Discount percentage if applicable"
+
+  - name: stg_app_usage
+    description: "Cleaned and standardized mobile app usage data from the raw source"
+    columns:
+      - name: event_id
+        description: "Unique identifier for the event"
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "Customer identifier"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+      - name: event_timestamp
+        description: "Timestamp of the event"
+        tests:
+          - not_null
+      - name: screen
+        description: "App screen"
+        tests:
+          - not_null
+      - name: action
+        description: "User action"
+        tests:
+          - not_null
+      - name: operating_system
+        description: "Operating system"
+      - name: app_version
+        description: "App version"
+        tests:
+          - not_null
+      - name: session_id
+        description: "Session identifier"
+        tests:
+          - not_null
+      - name: duration_seconds
+        description: "Duration in seconds"
+        tests:
+          - not_null
+      - name: device_model
+        description: "Device model"
+
+  - name: stg_refunds
+    description: "Synthetic refund data generated from orders and order items"
+    columns:
+      - name: refund_id
+        description: "Unique identifier for the refund"
+        tests:
+          - unique
+          - not_null
+      - name: order_id
+        description: "Order identifier"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_orders')
+              field: order_id
+      - name: order_item_id
+        description: "Order item identifier"
+        tests:
+          - not_null
+      - name: product_id
+        description: "Product identifier"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_products')
+              field: product_id
+      - name: seller_id
+        description: "Seller identifier"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_sellers')
+              field: seller_id
+      - name: refund_amount
+        description: "Refund amount"
+        tests:
+          - not_null
+      - name: refund_date
+        description: "Date when the refund was processed"
+        tests:
+          - not_null
+      - name: refund_reason
+        description: "Reason for the refund"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['damaged_product', 'wrong_item', 'not_as_described', 'changed_mind']

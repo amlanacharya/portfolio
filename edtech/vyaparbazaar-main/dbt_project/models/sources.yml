@@ -1,0 +1,246 @@
+version: 2
+
+sources:
+  - name: vyaparbazaar_raw
+    description: "Raw data from VyaparBazaar e-commerce platform"
+    schema: main
+    tables:
+      - name: vyaparbazaar_customers
+        description: "Customer information"
+        columns:
+          - name: customer_id
+            description: "Unique identifier for a customer"
+          - name: customer_unique_id
+            description: "Unique identifier that represents a customer"
+          - name: customer_zip_code_prefix
+            description: "First digits of customer zip code"
+          - name: customer_city
+            description: "Customer city name"
+          - name: customer_state
+            description: "Customer state"
+
+      - name: vyaparbazaar_orders
+        description: "Order information"
+        columns:
+          - name: order_id
+            description: "Unique identifier of the order"
+          - name: customer_id
+            description: "Key to the customer dataset"
+          - name: order_status
+            description: "Order status"
+          - name: order_purchase_timestamp
+            description: "Purchase timestamp"
+          - name: order_approved_at
+            description: "Payment approval timestamp"
+          - name: order_delivered_carrier_date
+            description: "Order posting timestamp"
+          - name: order_delivered_customer_date
+            description: "Actual order delivery date"
+          - name: order_estimated_delivery_date
+            description: "Estimated delivery date"
+
+      - name: vyaparbazaar_order_items
+        description: "Items within orders"
+        columns:
+          - name: order_id
+            description: "Order identifier"
+          - name: order_item_id
+            description: "Sequential number identifying order items"
+          - name: product_id
+            description: "Product identifier"
+          - name: seller_id
+            description: "Seller identifier"
+          - name: shipping_limit_date
+            description: "Delivery time limit"
+          - name: price
+            description: "Item price"
+          - name: freight_value
+            description: "Item freight value"
+
+      - name: vyaparbazaar_products
+        description: "Product information"
+        columns:
+          - name: product_id
+            description: "Product identifier"
+          - name: product_category_name
+            description: "Root category of product"
+          - name: product_category_name_english
+            description: "Root category name in English"
+          - name: product_length_cm
+            description: "Product length (centimeters)"
+          - name: product_height_cm
+            description: "Product height (centimeters)"
+          - name: product_width_cm
+            description: "Product width (centimeters)"
+          - name: product_weight_g
+            description: "Product weight (grams)"
+
+      - name: vyaparbazaar_sellers
+        description: "Seller information"
+        columns:
+          - name: seller_id
+            description: "Seller identifier"
+          - name: seller_zip_code_prefix
+            description: "First digits of seller zip code"
+          - name: seller_city
+            description: "Seller city name"
+          - name: seller_state
+            description: "Seller state"
+
+      - name: vyaparbazaar_payments
+        description: "Order payment information"
+        columns:
+          - name: order_id
+            description: "Order identifier"
+          - name: payment_sequential
+            description: "Sequential payment number"
+          - name: payment_type
+            description: "Payment method"
+          - name: payment_installments
+            description: "Number of installments"
+          - name: payment_value
+            description: "Payment value"
+
+      - name: vyaparbazaar_reviews
+        description: "Customer reviews"
+        columns:
+          - name: review_id
+            description: "Review identifier"
+          - name: order_id
+            description: "Order identifier"
+          - name: review_score
+            description: "Review score (1-5)"
+          - name: review_comment_title
+            description: "Review title"
+          - name: review_comment_message
+            description: "Review message"
+          - name: review_creation_date
+            description: "Review creation date"
+          - name: review_answer_timestamp
+            description: "Review answer timestamp"
+
+      - name: vyaparbazaar_clickstream
+        description: "Website clickstream data"
+        columns:
+          - name: event_id
+            description: "Unique identifier for the event"
+          - name: customer_id
+            description: "Customer identifier"
+          - name: event_timestamp
+            description: "Timestamp of the event"
+          - name: event_type
+            description: "Type of event"
+          - name: page_type
+            description: "Type of page"
+          - name: device
+            description: "Device used"
+          - name: browser
+            description: "Browser used"
+          - name: operating_system
+            description: "Operating system"
+          - name: app_version
+            description: "App version if applicable"
+          - name: session_id
+            description: "Session identifier"
+          - name: event_details
+            description: "JSON with event-specific details"
+
+      - name: vyaparbazaar_support_tickets
+        description: "Customer support interactions"
+        columns:
+          - name: ticket_id
+            description: "Unique identifier for the support ticket"
+          - name: customer_id
+            description: "Customer identifier"
+          - name: order_id
+            description: "Related order if applicable"
+          - name: created_at
+            description: "Ticket creation timestamp"
+          - name: category
+            description: "Support ticket category"
+          - name: channel
+            description: "Support channel"
+          - name: status
+            description: "Ticket status"
+          - name: resolved_at
+            description: "Resolution timestamp"
+          - name: satisfaction_rating
+            description: "Customer satisfaction rating"
+          - name: priority
+            description: "Ticket priority"
+
+      - name: vyaparbazaar_marketing_campaigns
+        description: "Marketing campaign data"
+        columns:
+          - name: campaign_id
+            description: "Unique identifier for the campaign"
+          - name: campaign_name
+            description: "Campaign name"
+          - name: channel
+            description: "Marketing channel"
+          - name: campaign_type
+            description: "Type of campaign"
+          - name: start_date
+            description: "Campaign start date"
+          - name: end_date
+            description: "Campaign end date"
+          - name: budget
+            description: "Campaign budget"
+          - name: impressions
+            description: "Number of impressions"
+          - name: clicks
+            description: "Number of clicks"
+          - name: conversions
+            description: "Number of conversions"
+          - name: revenue
+            description: "Revenue generated"
+          - name: target_audience
+            description: "Target audience"
+          - name: discount_percentage
+            description: "Discount percentage if applicable"
+
+      - name: vyaparbazaar_app_usage
+        description: "Mobile app usage data"
+        columns:
+          - name: event_id
+            description: "Unique identifier for the event"
+          - name: customer_id
+            description: "Customer identifier"
+          - name: event_timestamp
+            description: "Timestamp of the event"
+          - name: screen
+            description: "App screen"
+          - name: action
+            description: "User action"
+          - name: operating_system
+            description: "Operating system"
+          - name: app_version
+            description: "App version"
+          - name: session_id
+            description: "Session identifier"
+          - name: duration_seconds
+            description: "Duration in seconds"
+          - name: device_model
+            description: "Device model"
+
+      - name: raw_inventory
+        description: "Inventory data including stock levels and sales rates"
+        columns:
+          - name: inventory_id
+            description: "Unique identifier for inventory record"
+          - name: product_id
+            description: "Product identifier"
+          - name: inventory_date
+            description: "Date of inventory record"
+          - name: stock_level
+            description: "Current stock level"
+          - name: reorder_level
+            description: "Level at which reordering is triggered"
+          - name: reorder_quantity
+            description: "Quantity to reorder when triggered"
+          - name: daily_sales_rate
+            description: "Average daily sales rate"
+          - name: warehouse_id
+            description: "Warehouse identifier"
+          - name: last_updated_at
+            description: "Last update timestamp"

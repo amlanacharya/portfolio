@@ -1,0 +1,10 @@
+vyaparbazaar:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: '../data/vyaparbazaar.duckdb'
+      extensions:
+        - httpfs
+        - parquet
+      threads: 4
