@@ -1,0 +1,18 @@
+# Environment variables (contains GitHub token)
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+
+# Jupyter Notebooks
+*.ipynb_checkpoints/
+
+# Temporary files
+temp/
+*.tmp
