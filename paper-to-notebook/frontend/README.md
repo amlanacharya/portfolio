@@ -335,12 +335,7 @@ To contribute:
 | Framer Motion | 11.0.0 | Animations |
 | Lucide React | 0.344.0 | Icons |
 
-## 🌟 Design Inspiration
 
-UI inspired by:
-- Vizz-Paper (gradient borders, glassmorphism)
-- Modern web3 apps (dark theme, neon accents)
-- Academic tools (clean, professional)
 
 ## 📧 Support
 
