@@ -129,18 +129,3 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 This project is licensed under the MIT License.
 
-
-## 📧 Contact
-
-For any queries, mail us at: [raj.dandekar8@gmail.com](mailto:raj.dandekar8@gmail.com)
-
-## 🔗 Links
-
-- **GitHub**: [VizuaraAI/paper-to-notebook](https://github.com/VizuaraAI/paper-to-notebook)
-- **Other Products**:
-  - [Vizz-AI](https://vizz.vizuara.ai) - Personalized AI tutor
-  - [Dynaroute](https://dynaroute.vizuara.ai) - Smart routing solution
-
----
-
-**Note**: This tool is designed for educational and research purposes. Always verify generated code before use in production.

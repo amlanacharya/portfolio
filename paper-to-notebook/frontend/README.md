@@ -359,4 +359,4 @@ For issues:
 
 ---
 
-**Made with ✨ by the Paper to Notebook team**
+**Made with ✨ BY CLAUDE AND GLMA**
