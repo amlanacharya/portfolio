@@ -13,6 +13,9 @@ Trip Planner leverages the CrewAI framework to automate and enhance the trip pla
 
 CrewAI simplifies the orchestration of role-playing AI agents. In VacAIgent, these agents collaboratively decide on cities and craft a complete itinerary for your trip based on specified preferences, all accessible via a streamlined Streamlit user interface.
 
+### Flow Diagram
+
+![Flow Diagram](flow_diagram.svg)
 
 ## Running the Application
 
