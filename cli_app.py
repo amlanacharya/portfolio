@@ -6,6 +6,7 @@ import argparse
 from langchain_openai import ChatOpenAI
 from langchain_groq import ChatGroq
 import os
+from dotenv import load_dotenv
 
 
 class TripCrew:
@@ -15,7 +16,7 @@ class TripCrew:
         self.interests = interests
         self.date_range = date_range
         #self.llm = LLM(model="groq/deepseek-r1-distill-llama-70b")
-        self.llm = LLM(model="gemini/gemini-2.0-flash")
+        self.llm = LLM(model="gemini/gemini-2.5-flash")
 
 
     def run(self):

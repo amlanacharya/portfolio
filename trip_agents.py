@@ -12,7 +12,7 @@ class TripAgents():
     def __init__(self, llm: BaseChatModel = None):
         if llm is None:
             #self.llm = LLM(model="groq/deepseek-r1-distill-llama-70b")
-            self.llm = LLM(model="gemini/gemini-2.0-flash")
+            self.llm = LLM(model="gemini/gemini-2.5-flash")
         else:
             self.llm = llm
 
