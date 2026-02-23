@@ -1,0 +1,11 @@
+curl -X 'POST' \
+  'http://localhost:8000/api/v1/plan-trip' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "origin": "San Mateo, CA",
+    "destination": "Bali, Indonesia",
+    "start_date": "2024-03-01",
+    "end_date": "2024-03-10",
+    "interests": "2 adults who love swimming, dancing, hiking"
+  }'
