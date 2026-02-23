@@ -6,6 +6,7 @@ import datetime
 import sys
 from langchain_openai import OpenAI
 
+
 st.set_page_config(page_icon="✈️", layout="wide")
 
 

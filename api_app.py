@@ -3,10 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from datetime import date, datetime
 from typing import Optional
-from crewai import Crew
+from crewai import Crew, LLM
 from trip_agents import TripAgents
 from trip_tasks import TripTasks
-from langchain_openai import OpenAI
 import os
 from dotenv import load_dotenv
 from functools import lru_cache
@@ -31,19 +30,19 @@ app.add_middleware(
 
 class TripRequest(BaseModel):
     origin: str = Field(..., 
-        example="San Mateo, CA",
+        example="Bangalore, India",
         description="Your current location")
     destination: str = Field(..., 
-        example="Bali, Indonesia",
+        example="Krabi, Thailand",
         description="Destination city and country")
     start_date: date = Field(..., 
-        example="2024-03-01",
+        example="2025-06-01",
         description="Start date of your trip")
     end_date: date = Field(..., 
-        example="2024-03-10",
+        example="2025-06-10",
         description="End date of your trip")
     interests: str = Field(..., 
-        example="2 adults who love swimming, dancing, hiking",
+        example="2 adults who love swimming, dancing, hiking, shopping, local food, water sports adventures and rock climbing",
         description="Your interests and trip details")
 
 class TripResponse(BaseModel):
@@ -54,7 +53,7 @@ class TripResponse(BaseModel):
 
 class Settings:
     def __init__(self):
-        self.OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+        self.GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
         self.SERPER_API_KEY = os.getenv("SERPER_API_KEY")
         self.BROWSERLESS_API_KEY = os.getenv("BROWSERLESS_API_KEY")
 
@@ -64,7 +63,7 @@ def get_settings():
 
 def validate_api_keys(settings: Settings = Depends(get_settings)):
     required_keys = {
-        'OPENAI_API_KEY': settings.OPENAI_API_KEY,
+        'GEMINI_API_KEY': settings.GEMINI_API_KEY,
         'SERPER_API_KEY': settings.SERPER_API_KEY,
         'BROWSERLESS_API_KEY': settings.BROWSERLESS_API_KEY
     }
@@ -83,10 +82,7 @@ class TripCrew:
         self.origin = origin
         self.interests = interests
         self.date_range = date_range
-        self.llm = OpenAI(
-            temperature=0.7,
-            model_name="gpt-4",
-        )
+        self.llm = LLM(model="gemini/gemini-2.0-flash")
 
     def run(self):
         try:
@@ -127,7 +123,9 @@ class TripCrew:
                 verbose=True
             )
 
-            return crew.kickoff()
+            result = crew.kickoff()
+            # Convert CrewOutput to string and ensure it's properly formatted
+            return result.raw if hasattr(result, 'raw') else str(result)
         except Exception as e:
             raise HTTPException(
                 status_code=500,
@@ -167,6 +165,10 @@ async def plan_trip(
         
         itinerary = trip_crew.run()
         
+        # Ensure itinerary is a string
+        if not isinstance(itinerary, str):
+            itinerary = str(itinerary)
+            
         return TripResponse(
             status="success",
             message="Trip plan generated successfully",
