@@ -1,0 +1,5 @@
+jax[cpu]
+pytube
+cached_property
+tiktoken
+langchain
