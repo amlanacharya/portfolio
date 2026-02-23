@@ -1,15 +1,3 @@
-<p align="center">
-    <img alt="Ava" src="img/ava_final_design.gif" width=800 />
-    <h1 align="center">Ava — AI WhatsApp Companion</h1>
-    <h3 align="center">A production-grade multimodal AI agent that converses over WhatsApp</h3>
-</p>
-
-<p align="center">
-    <img alt="WhatsApp" src="img/whatsapp_logo.png" width=80 />
-</p>
-
----
-
 ## Overview
 
 **Ava** is a fully autonomous AI companion that runs on WhatsApp. She can hold natural conversations, understand your voice, see your images, reply with voice notes, generate images of her activities, and remember details about you across sessions.
