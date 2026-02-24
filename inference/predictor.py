@@ -153,41 +153,54 @@ if __name__ == "__main__":
     # Use same feature names as training CSV (excluding target column).
     # Values should be numeric (mostly -1/0/1 for this dataset).
 
-    sample_input = {
-        "having_IP_Address": 0,
-        "URL_Length": 1,
-        "Shortining_Service": 0,
-        "having_At_Symbol": 0,
-        "double_slash_redirecting": 1,
-        "Prefix_Suffix": 0,
-        "having_Sub_Domain": 1,
-        "SSLfinal_State": 1,
-        "Domain_registeration_length": 1,
-        "Favicon": 1,
-        "port": 0,
-        "HTTPS_token": 0,
-        "Request_URL": 1,
-        "URL_of_Anchor": 1,
-        "Links_in_tags": 1,
-        "SFH": 1,
-        "Submitting_to_email": 0,
-        "Abnormal_URL": 0,
-        "Redirect": 1,
-        "on_mouseover": 0,
-        "RightClick": 1,
-        "popUpWidnow": 0,
-        "Iframe": 0,
-        "age_of_domain": 1,
-        "DNSRecord": 1,
-        "web_traffic": 1,
-        "Page_Rank": 1,
-        "Google_Index": 1,
-        "Links_pointing_to_page": 1,
-        "Statistical_report": 0
-    }
+    # sample_input = {
+    #     "having_IP_Address": 0,
+    #     "URL_Length": 1,
+    #     "Shortining_Service": 0,
+    #     "having_At_Symbol": 0,
+    #     "double_slash_redirecting": 1,
+    #     "Prefix_Suffix": 0,
+    #     "having_Sub_Domain": 1,
+    #     "SSLfinal_State": 1,
+    #     "Domain_registeration_length": 1,
+    #     "Favicon": 1,
+    #     "port": 0,
+    #     "HTTPS_token": 0,
+    #     "Request_URL": 1,
+    #     "URL_of_Anchor": 1,
+    #     "Links_in_tags": 1,
+    #     "SFH": 1,
+    #     "Submitting_to_email": 0,
+    #     "Abnormal_URL": 0,
+    #     "Redirect": 1,
+    #     "on_mouseover": 0,
+    #     "RightClick": 1,
+    #     "popUpWidnow": 0,
+    #     "Iframe": 0,
+    #     "age_of_domain": 1,
+    #     "DNSRecord": 1,
+    #     "web_traffic": 1,
+    #     "Page_Rank": 1,
+    #     "Google_Index": 1,
+    #     "Links_pointing_to_page": 1,
+    #     "Statistical_report": 0
+    # }
+    from feature_extraction import FeatureExtractor
+    from inference.predictor import predict   # your existing ML predict()
 
-    print("\n--- XGBoost Prediction ---")
-    print(predict(sample_input, model_type="xgboost"))
+    extractor = FeatureExtractor()
 
-    print("\n--- ANN (MLPClassifier) Prediction ---")
-    print(predict(sample_input, model_type="ann"))
+    url = "https://secure-paypal-login-verification.xyz/login"
+
+    features = extractor.extract(url)
+
+    result = predict(features, model_type="xgboost")
+
+    print(result)
+
+
+    # print("\n--- XGBoost Prediction ---")
+    # print(predict(sample_input, model_type="xgboost"))
+
+    # print("\n--- ANN (MLPClassifier) Prediction ---")
+    # print(predict(sample_input, model_type="ann"))

@@ -3,6 +3,8 @@ from src.data_loader import load_dataset
 from src.preprocessor import preprocess_data
 from src.train_xgboost import train_xgboost
 from src.train_ann import train_ann
+import mlflow
+mlflow.set_experiment("PhishGuard_AI")
 
 def run_pipeline():
     config = load_config()
