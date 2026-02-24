@@ -1,0 +1,10 @@
+streamlit==1.32.0
+python-dotenv==1.0.0
+groq==0.4.2
+requests==2.31.0
+neo4j==5.14.0
+sentence-transformers==2.5.1
+numpy==1.26.4
+torch==2.2.0
+pytest==8.0.0
+pytest-mock==3.12.0 
