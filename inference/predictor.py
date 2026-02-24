@@ -185,7 +185,7 @@ if __name__ == "__main__":
     #     "Links_pointing_to_page": 1,
     #     "Statistical_report": 0
     # }
-    from feature_extraction import FeatureExtractor
+    from src.website_feature_extraction import FeatureExtractor
 
     extractor = FeatureExtractor()
     #url = "https://secure-paypal-login-verification.xyz/login"
