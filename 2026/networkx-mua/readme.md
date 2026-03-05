@@ -285,33 +285,6 @@ Ollama (llama3.1:8b local) -> Groq (cloud API) -> Keyword matching
 
 ---
 
-### Advanced RAG Knowledge (Not Built, Can Discuss)
-
-#### Retrieval Strategies
-- **Hybrid search**: Dense (vector) + Sparse (BM25). Catches both semantic similarity and exact keyword matches.
-- **Re-ranking**: Retrieve top-50 fast, then cross-encoder re-ranks to top-5. More accurate but slower.
-- **MMR**: Maximal Marginal Relevance - balances relevance with diversity.
-- **Multi-query**: LLM generates query variations, retrieves for each, merges results.
-
-#### Advanced RAG Patterns
-- **CRAG**: Grades retrieved chunks for relevance. Low relevance -> reformulate query and retry.
-- **Self-RAG**: LLM decides if retrieval is needed, then self-evaluates its answer.
-- **HyDE**: Generate hypothetical answer first, embed THAT, search with it. Better for vague queries.
-- **Graph RAG**: Use knowledge graph to enrich retrieval queries. Our system does this.
-- **Adaptive RAG**: Route to different strategies based on query complexity.
-
-#### Evaluation (RAGAS)
-- **Faithfulness**: Is the answer grounded in retrieved context? (no hallucination)
-- **Answer Relevance**: Does the answer address the question?
-- **Context Precision**: Are retrieved chunks relevant? (relevant chunks ranked higher)
-- **Context Recall**: Were all necessary chunks retrieved?
-
-#### Monitoring (LangFuse/LangSmith)
-- Trace visualization, latency tracking, token usage, cost
-- Retrieval quality over time (drift detection)
-- Prompt versioning, user feedback collection
-
----
 
 ### Production Scaling (What I'd Change)
 
