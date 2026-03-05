@@ -1,15 +1,25 @@
 import os
 import json
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import requests
 
 
-DEFAULT_API_URL = os.environ.get("PAGEINDEX_API_URL", "http://localhost:8080")
-DEFAULT_SITE_ID = os.environ.get("PAGEINDEX_SITE_ID")
+DEFAULT_API_URL = os.environ.get("PAGEINDEX_API_URL", "https://api.pageindex.ai")
 DEFAULT_API_KEY = os.environ.get("PAGEINDEX_API_KEY")
 DEFAULT_TOP_K = 5
+MANIFEST_PATH = Path(__file__).parent / "docs_folder" / "pageindex_manifest.json"
+
+
+def _load_doc_ids_from_manifest(path: Path = MANIFEST_PATH) -> List[str]:
+    """Read all doc_id values from the PageIndex manifest file."""
+    if not path.exists():
+        return []
+    with open(path) as f:
+        manifest = json.load(f)
+    return [entry["doc_id"] for entry in manifest.values() if entry.get("doc_id")]
 
 
 @dataclass
@@ -24,41 +34,43 @@ class PageIndexResult:
 
 class PageIndexClient:
     """
-    Lightweight HTTP client for PageIndex vectorless search.
-    Assumes API key + site id are provided via env or constructor args.
+    Lightweight HTTP client for PageIndex Chat API (vectorless search).
+    Uses /chat/completions which supports doc_id as an array and works
+    on any doc with status=completed (no retrieval_ready required).
     """
 
     def __init__(
         self,
         api_url: str = DEFAULT_API_URL,
         api_key: Optional[str] = DEFAULT_API_KEY,
-        site_id: Optional[str] = DEFAULT_SITE_ID,
-        timeout: int = 30,
+        doc_ids: Optional[List[str]] = None,
+        timeout: int = 60,
     ) -> None:
         self.api_url = api_url.rstrip("/")
         self.api_key = api_key
-        self.site_id = site_id
+        self.doc_ids = doc_ids if doc_ids is not None else _load_doc_ids_from_manifest()
         self.timeout = timeout
 
     def _headers(self) -> Dict[str, str]:
         headers = {"Content-Type": "application/json"}
         if self.api_key:
-            headers["Authorization"] = f"Bearer {self.api_key}"
+            headers["api_key"] = self.api_key
         return headers
 
     def search(self, query: str, top_k: int = DEFAULT_TOP_K) -> List[PageIndexResult]:
         if not query.strip():
             return []
-        if not self.site_id:
-            raise ValueError("PAGEINDEX_SITE_ID is not set")
+        if not self.doc_ids:
+            raise RuntimeError("No doc_ids configured — check pageindex_manifest.json")
 
-        payload = {
-            "site_id": self.site_id,
-            "query": query,
-            "top_k": top_k,
+        payload: Dict[str, Any] = {
+            "messages": [{"role": "user", "content": query}],
+            "doc_id": self.doc_ids,
+            "stream": False,
+            "enable_citations": True,
         }
 
-        url = f"{self.api_url}/api/search"
+        url = f"{self.api_url}/chat/completions"
         try:
             resp = requests.post(
                 url,
@@ -71,26 +83,20 @@ class PageIndexClient:
             raise RuntimeError(f"PageIndex search failed: {exc}") from exc
 
         data = resp.json()
-        results = data.get("results") or data.get("data") or []
-        parsed: List[PageIndexResult] = []
-        for item in results:
-            parsed.append(
-                PageIndexResult(
-                    text=item.get("text") or "",
-                    source=item.get("source"),
-                    section=item.get("section"),
-                    score=item.get("score"),
-                    url=item.get("url"),
-                    tree=item.get("tree") or data.get("tree"),
-                )
+        choices = data.get("choices", [])
+        if not choices:
+            return []
+
+        content = choices[0].get("message", {}).get("content", "")
+        if not content:
+            return []
+
+        return [
+            PageIndexResult(
+                text=content,
+                source="PageIndex Chat API",
             )
-
-        # If API returns a single tree at root, attach to first result
-        if data.get("tree") and parsed:
-            if not parsed[0].tree:
-                parsed[0].tree = data["tree"]
-
-        return parsed
+        ]
 
 
 __all__ = ["PageIndexClient", "PageIndexResult"]

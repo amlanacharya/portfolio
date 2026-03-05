@@ -820,12 +820,11 @@ with st.container(border=True):
 st.markdown("---")
 with st.container(border=True):
     st.subheader("PageIndex RAG (Vectorless)")
-    api_url = os.environ.get("PAGEINDEX_API_URL", "http://localhost:8080")
-    site_id = os.environ.get("PAGEINDEX_SITE_ID")
+    api_url = os.environ.get("PAGEINDEX_API_URL", "https://api.pageindex.ai")
     api_key = os.environ.get("PAGEINDEX_API_KEY")
 
-    if not site_id or not api_key:
-        st.warning("PAGEINDEX_SITE_ID or PAGEINDEX_API_KEY is not set. Configure .env to enable PageIndex queries.")
+    if not api_key:
+        st.warning("PAGEINDEX_API_KEY is not set. Configure .env to enable PageIndex queries.")
 
     col_pi_input, col_pi_meta = st.columns([3, 1])
     with col_pi_input:
@@ -836,13 +835,12 @@ with st.container(border=True):
         )
     with col_pi_meta:
         st.caption(f"API: {api_url}")
-        st.caption(f"Site: {site_id or 'not set'}")
 
     run_pi = st.button("Run (PageIndex)", key="run_pageindex", type="primary", use_container_width=True)
     if run_pi and pi_query:
         start = time.time()
         try:
-            pi_client = PageIndexClient(api_url=api_url, api_key=api_key, site_id=site_id)
+            pi_client = PageIndexClient(api_url=api_url, api_key=api_key)
             st.session_state.pageindex_results = pi_client.search(pi_query, top_k=5)
             st.session_state.pageindex_error = None
         except Exception as exc:

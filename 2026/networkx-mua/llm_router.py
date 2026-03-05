@@ -31,7 +31,19 @@ Classify the user's query into exactly one of these intents:
    Examples: "Fix the port_1 status", "Change vendor_1 to operational", "Execute the reroute"
 
 5. **document** - User is asking about policies, contracts, procedures, or regulations
-   Examples: "What's the penalty for late delivery?", "What's the protocol for port congestion?", "Is this covered under force majeure?", "How do I handle a cyclone?"
+   Examples: "What's the penalty for late delivery?", "What's the protocol for port congestion?", "Is this covered under force majeure?", "How do I handle a cyclone?",
+             "What is the maximum storage capacity of a warehouse?", "What is the reorder trigger threshold?",
+             "What is the cost increase for diverting cargo to another port?",
+             "What happens when the defect rate exceeds a threshold?",
+             "At what throughput level is an incident classified as high severity?",
+             "What is the current price of a commodity?",
+             "What is the backup route if a sea route is disrupted?",
+             "Which alternative route is used when the primary route fails?"
+
+NOTE on **query** vs **document**: Use **query** ONLY for questions about the live real-time
+status of a named supply chain node (e.g. port_1, vendor_1, warehouse_1). Do NOT use query
+for questions about policy values, contractual thresholds, or SOP-defined numbers — those
+are always **document**.
 
 Return ONLY the intent word. No explanation. No punctuation. Just one word: query, rca, simulate, action, or document.
 

@@ -4,13 +4,15 @@ import os
 from pathlib import Path
 from typing import Dict, Any
 
+from dotenv import load_dotenv
 import requests
 
+load_dotenv()
 
-API_URL = os.environ.get("PAGEINDEX_API_URL", "http://localhost:8080")
+
+API_URL = os.environ.get("PAGEINDEX_API_URL", "https://api.pageindex.ai")
 API_KEY = os.environ.get("PAGEINDEX_API_KEY")
-SITE_ID = os.environ.get("PAGEINDEX_SITE_ID")
-UPLOAD_ENDPOINT = os.environ.get("PAGEINDEX_UPLOAD_PATH", "/api/documents")
+UPLOAD_ENDPOINT = os.environ.get("PAGEINDEX_UPLOAD_PATH", "/doc/")
 
 MANIFEST_PATH = Path("docs_folder/pageindex_manifest.json")
 
@@ -27,15 +29,14 @@ def save_manifest(data: Dict[str, Any]) -> None:
 
 
 def upload_pdf(pdf_path: Path, force: bool = False) -> Dict[str, Any]:
-    if not API_KEY or not SITE_ID:
-        raise RuntimeError("PAGEINDEX_API_KEY and PAGEINDEX_SITE_ID must be set")
+    if not API_KEY:
+        raise RuntimeError("PAGEINDEX_API_KEY must be set")
 
     url = f"{API_URL.rstrip('/')}{UPLOAD_ENDPOINT}"
-    headers = {"Authorization": f"Bearer {API_KEY}"}
+    headers = {"api_key": API_KEY}
     files = {"file": (pdf_path.name, pdf_path.read_bytes(), "application/pdf")}
-    data = {"site_id": SITE_ID, "metadata": json.dumps({"source": pdf_path.name})}
 
-    resp = requests.post(url, headers=headers, files=files, data=data, timeout=60)
+    resp = requests.post(url, headers=headers, files=files, timeout=120)
     resp.raise_for_status()
     return resp.json()
 
@@ -45,10 +46,13 @@ def main() -> None:
     parser.add_argument("--pdf-dir", default="docs_folder/pdf", help="Directory containing PDF files")
     parser.add_argument("--dry-run", action="store_true", help="List planned uploads only")
     parser.add_argument("--force", action="store_true", help="Reupload even if manifest has entry")
+    parser.add_argument("--single-doc", help="Upload only this PDF filename (optional)")
     args = parser.parse_args()
 
     pdf_dir = Path(args.pdf_dir)
     pdf_files = sorted(pdf_dir.glob("*.pdf"))
+    if args.single_doc:
+        pdf_files = [p for p in pdf_files if p.name == args.single_doc]
     if not pdf_files:
         print(f"No PDFs found in {pdf_dir}. Run convert_md_to_pdf first.")
         return

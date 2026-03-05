@@ -84,9 +84,18 @@ def build_vector_store(
 #         for point in results.points
 #     ]
 
-docs_folder = r"2026\networkx-mua\docs_folder"
-chunks = load_and_chunk_docs(docs_folder)
-client, model = build_vector_store(chunks)
+_client = None
+_model = None
+
+
+def get_vector_store() -> tuple[QdrantClient, SentenceTransformer]:
+    """Lazy singleton — builds vector store on first call only."""
+    global _client, _model
+    if _client is None:
+        docs_folder = r"2026\networkx-mua\docs_folder"
+        chunks = load_and_chunk_docs(docs_folder)
+        _client, _model = build_vector_store(chunks)
+    return _client, _model
 
 # if __name__ == "__main__":
    

@@ -1,8 +1,6 @@
 from typing import List, Dict
-from sentence_transformers import SentenceTransformer
-from qdrant_client import QdrantClient
 
-from embedding import client, model
+from embedding import get_vector_store
 
 
 def search_docs(
@@ -10,15 +8,15 @@ def search_docs(
     top_k: int = 3,
     collection_name: str = "supply_chain_docs"
 ) -> List[Dict]:
-    
+    client, model = get_vector_store()
     query_embedding = model.encode(query)
-    
+
     results = client.query_points(
         collection_name=collection_name,
         query=query_embedding.tolist(),
         limit=top_k
     )
-    
+
     return [
         {
             "text": point.payload["text"],
@@ -30,5 +28,4 @@ def search_docs(
     ]
 
 
-
-__all__ = ["search_docs", "client", "model"]
+__all__ = ["search_docs"]

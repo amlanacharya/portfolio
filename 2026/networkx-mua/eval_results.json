@@ -1,0 +1,1521 @@
+{
+  "metadata": {
+    "date": "2026-03-05",
+    "gen_model": "ollama/llama3.1:8b",
+    "judge_model": "ollama/llama3.1:8b",
+    "embeddings": "all-MiniLM-L6-v2",
+    "n_cases": 15
+  },
+  "results": [
+    {
+      "test_case": {
+        "id": "T01",
+        "category": "single_doc",
+        "question": "What is the penalty percentage for a delivery that is 3-5 days late?",
+        "ground_truth": "A delivery that is 3-5 days late incurs a penalty of 5% of the order value.",
+        "expected_sources": [
+          "tata_steel_contract.md"
+        ],
+        "expected_intent": "document",
+        "top_k": 5
+      },
+      "answer": "Per Section 2. Penalty Structure of tata_steel_contract.md, the penalty is 5% of order value.",
+      "chunks": [
+        {
+          "source": "tata_steel_contract.md",
+          "section": "2. Penalty Structure",
+          "score": 0.7584118514152447,
+          "text": "## 2. Penalty Structure\n\n### Late Delivery Penalties\n1-2 days late: 2% of order value. 3-5 days late: 5% of order value. 6-10 days late: 10% of order value. More than 10 days late: 15% of order value plus right to cancel.\n\n### Quality Defect Penalties\nDefect rate 2-5%: 5% credit on affected shipment. Defect rate 5-10%: 15% credit plus root cause analysis required. Defect rate above 10%: full replacement at vendor cost plus 10% penalty."
+        },
+        {
+          "source": "tata_steel_contract.md",
+          "section": "1. SLA Terms",
+          "score": 0.4424973417704621,
+          "text": "## 1. SLA Terms\n\n### Delivery Performance\nOn-time delivery rate must be minimum 95%. Lead time is 7 business days for standard orders, 3 business days for rush orders. Orders must arrive within plus or minus 1 day of scheduled delivery to qualify as on-time.\n\n### Quality Standards\nMaximum 2% defective units per shipment. Steel coil must meet IS 2062 Grade A standards. Certificate of Conformity and Material Test Reports required with each shipment."
+        },
+        {
+          "source": "incident_management_sop.md",
+          "section": "Route Disruption Procedure",
+          "score": 0.36245359579749603,
+          "text": "## Route Disruption Procedure\n\nWhen a route status changes to \"disrupted,\" all pending shipments on that route are flagged. The operations team identifies the root cause (weather, infrastructure, labor). If the disruption is weather-related, check force majeure clauses in vendor contracts before assessing penalties."
+        },
+        {
+          "source": "shipping_policy.md",
+          "section": "Route Selection Rules",
+          "score": 0.35690788155144193,
+          "text": "## Route Selection Rules\n\nRoutes are selected based on transit time, cost, and reliability. For urgent shipments (under 5 days lead time), prioritize speed over cost. For standard shipments, use the lowest-cost active route. No single route should exceed 70% utilization."
+        },
+        {
+          "source": "shipping_policy.md",
+          "section": "Port Congestion Response",
+          "score": 0.3317582568615719,
+          "text": "## Port Congestion Response\n\nWhen a port status is \"congested,\" notify all shippers within 24 hours. If congestion exceeds 3 days, activate modal shift from sea to rail. If congestion exceeds 7 days, escalate to Supply Chain Director and consider emergency procurement from alternative suppliers."
+        }
+      ],
+      "metrics": {
+        "faithfulness": 0.0,
+        "answer_relevance": 0.4183839062849681,
+        "context_precision": 1.0,
+        "context_recall": 1.0,
+        "hit_rate": 1.0,
+        "mrr": 1.0,
+        "router_correct": true,
+        "is_refusal": false
+      },
+      "details": {
+        "faithfulness": {
+          "claims": [],
+          "supported": 0,
+          "total": 0,
+          "note": "no_claims_extracted"
+        },
+        "answer_relevance": {
+          "generated_questions": [
+            "What is the percentage of the penalty for non-compliance with the contract?",
+            "According to the tata_steel_contract.md, what is the penalty amount calculated as?",
+            "How is the penalty amount determined in the context of the tata_steel_contract.md?"
+          ],
+          "per_sim": [
+            0.5282633304595947,
+            0.3703957796096802,
+            0.3564926087856293
+          ],
+          "mean": 0.4183839062849681
+        },
+        "context_precision": {
+          "ranked_relevance": [
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "num_relevant": 2
+        },
+        "context_recall": {
+          "sentences": [
+            "A delivery that is 3-5 days late incurs a penalty of 5% of the order value."
+          ],
+          "supported_flags": [
+            true
+          ],
+          "supported": 1,
+          "total": 1
+        }
+      },
+      "latency_s": 4.095244200005254
+    },
+    {
+      "test_case": {
+        "id": "T02",
+        "category": "single_doc",
+        "question": "What is the maximum storage capacity of the Delhi Hub warehouse?",
+        "ground_truth": "The Delhi Hub (warehouse_1) has a maximum storage capacity of 800 units.",
+        "expected_sources": [
+          "warehouse_capacity_policy.md"
+        ],
+        "expected_intent": "document",
+        "top_k": 5
+      },
+      "answer": "The maximum capacity of Delhi Hub (warehouse_1) is 800 units (Section: Stock Level Thresholds).",
+      "chunks": [
+        {
+          "source": "warehouse_capacity_policy.md",
+          "section": "Stock Level Thresholds",
+          "score": 0.6546822064109517,
+          "text": "## Stock Level Thresholds\n\nEach warehouse has defined stock thresholds. Minimum stock level: 200 units. Reorder trigger: 250 units. Maximum capacity: Delhi Hub (warehouse_1) holds 800 units, Bangalore Hub (warehouse_2) holds 600 units. When stock drops below minimum, emergency replenishment is triggered."
+        },
+        {
+          "source": "warehouse_capacity_policy.md",
+          "section": "preamble",
+          "score": 0.6084474661820407,
+          "text": "# Warehouse Capacity Policy"
+        },
+        {
+          "source": "warehouse_capacity_policy.md",
+          "section": "Reorder Process",
+          "score": 0.5903554307326222,
+          "text": "## Reorder Process\n\nWhen stock at any warehouse hits the reorder trigger (250 units), an automatic purchase order is generated to the primary vendor. Delhi Hub currently holds 450 units (above threshold). Bangalore Hub currently holds 280 units (near reorder trigger). Reorder quantity is calculated as maximum capacity minus current stock."
+        },
+        {
+          "source": "incident_management_sop.md",
+          "section": "Factory Maintenance Protocol",
+          "score": 0.30914512576907316,
+          "text": "## Factory Maintenance Protocol\n\nWhen a factory enters \"maintenance\" status, downstream production is halted. Inventory at connected warehouses is assessed. If stock levels fall below minimum threshold (200 units), trigger emergency procurement from backup vendors."
+        },
+        {
+          "source": "tata_steel_contract.md",
+          "section": "3. Delivery Commitments",
+          "score": 0.2951414777439143,
+          "text": "## 3. Delivery Commitments\n\nPrimary supply route originates from Jamshedpur Steel Plant in Jharkhand to Mumbai Plant (factory_1) via rail and road multimodal transport. Transit time is 5-7 business days. Backup route goes through Kolkata and activates automatically when primary route transit exceeds 10 days."
+        }
+      ],
+      "metrics": {
+        "faithfulness": 0.0,
+        "answer_relevance": 0.7936638792355856,
+        "context_precision": 1.0,
+        "context_recall": 1.0,
+        "hit_rate": 1.0,
+        "mrr": 1.0,
+        "router_correct": true,
+        "is_refusal": false
+      },
+      "details": {
+        "faithfulness": {
+          "claims": [],
+          "supported": 0,
+          "total": 0,
+          "note": "no_claims_extracted"
+        },
+        "answer_relevance": {
+          "generated_questions": [
+            "What is the maximum capacity of Delhi Hub (warehouse_1)?",
+            "Can you confirm the stock level threshold for warehouse_1 in Delhi Hub?",
+            "What is the maximum number of units that Delhi Hub (warehouse_1) can hold?"
+          ],
+          "per_sim": [
+            0.9151696562767029,
+            0.6247901916503906,
+            0.8410317897796631
+          ],
+          "mean": 0.7936638792355856
+        },
+        "context_precision": {
+          "ranked_relevance": [
+            true,
+            false,
+            false,
+            false,
+            false
+          ],
+          "num_relevant": 1
+        },
+        "context_recall": {
+          "sentences": [
+            "The Delhi Hub (warehouse_1) has a maximum storage capacity of 800 units."
+          ],
+          "supported_flags": [
+            true
+          ],
+          "supported": 1,
+          "total": 1
+        }
+      },
+      "latency_s": 4.384650899999542
+    },
+    {
+      "test_case": {
+        "id": "T03",
+        "category": "single_doc",
+        "question": "At what stock level is an automatic reorder triggered?",
+        "ground_truth": "An automatic purchase order is generated when stock at any warehouse hits the reorder trigger of 250 units.",
+        "expected_sources": [
+          "warehouse_capacity_policy.md"
+        ],
+        "expected_intent": "document",
+        "top_k": 5
+      },
+      "answer": "The stock level at which an automatic reorder is triggered is 250 units. (Reorder Process, warehouse_capacity_policy.md)",
+      "chunks": [
+        {
+          "source": "warehouse_capacity_policy.md",
+          "section": "Reorder Process",
+          "score": 0.5701404922001638,
+          "text": "## Reorder Process\n\nWhen stock at any warehouse hits the reorder trigger (250 units), an automatic purchase order is generated to the primary vendor. Delhi Hub currently holds 450 units (above threshold). Bangalore Hub currently holds 280 units (near reorder trigger). Reorder quantity is calculated as maximum capacity minus current stock."
+        },
+        {
+          "source": "warehouse_capacity_policy.md",
+          "section": "Stock Level Thresholds",
+          "score": 0.40886330543557914,
+          "text": "## Stock Level Thresholds\n\nEach warehouse has defined stock thresholds. Minimum stock level: 200 units. Reorder trigger: 250 units. Maximum capacity: Delhi Hub (warehouse_1) holds 800 units, Bangalore Hub (warehouse_2) holds 600 units. When stock drops below minimum, emergency replenishment is triggered."
+        },
+        {
+          "source": "warehouse_capacity_policy.md",
+          "section": "Critical Product Priority",
+          "score": 0.34075506150337753,
+          "text": "## Critical Product Priority\n\nProducts marked as \"critical\" priority (Steel Coil, Steel Sheets) receive preferential warehouse allocation. During capacity constraints, standard priority products (Petrochemical Products) are deprioritized. Critical products must maintain a minimum 30-day supply buffer."
+        },
+        {
+          "source": "warehouse_capacity_policy.md",
+          "section": "Inventory Reconciliation",
+          "score": 0.3407219198038802,
+          "text": "## Inventory Reconciliation\n\nMonthly physical inventory counts are mandatory. Variance above 3% triggers an audit. All product movements between warehouses must be logged with timestamps and authorization codes."
+        },
+        {
+          "source": "incident_management_sop.md",
+          "section": "Factory Maintenance Protocol",
+          "score": 0.3326357039556865,
+          "text": "## Factory Maintenance Protocol\n\nWhen a factory enters \"maintenance\" status, downstream production is halted. Inventory at connected warehouses is assessed. If stock levels fall below minimum threshold (200 units), trigger emergency procurement from backup vendors."
+        }
+      ],
+      "metrics": {
+        "faithfulness": 0.0,
+        "answer_relevance": 0.8121215105056763,
+        "context_precision": 1.0,
+        "context_recall": 1.0,
+        "hit_rate": 1.0,
+        "mrr": 1.0,
+        "router_correct": true,
+        "is_refusal": false
+      },
+      "details": {
+        "faithfulness": {
+          "claims": [],
+          "supported": 0,
+          "total": 0,
+          "note": "no_claims_extracted"
+        },
+        "answer_relevance": {
+          "generated_questions": [
+            "What is the minimum stock level required to trigger an automatic reorder in the inventory system?",
+            "How does the warehouse capacity policy handle stock levels in relation to automatic reordering?",
+            "At what point in the stock levels is an automatic reorder initiated, according to the inventory management process?"
+          ],
+          "per_sim": [
+            0.8574486374855042,
+            0.6796111464500427,
+            0.8993047475814819
+          ],
+          "mean": 0.8121215105056763
+        },
+        "context_precision": {
+          "ranked_relevance": [
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "num_relevant": 2
+        },
+        "context_recall": {
+          "sentences": [
+            "An automatic purchase order is generated when stock at any warehouse hits the reorder trigger of 250 units."
+          ],
+          "supported_flags": [
+            true
+          ],
+          "supported": 1,
+          "total": 1
+        }
+      },
+      "latency_s": 4.532430699997349
+    },
+    {
+      "test_case": {
+        "id": "T04",
+        "category": "single_doc",
+        "question": "What is the lead time for rush orders under the Tata Steel contract?",
+        "ground_truth": "Rush orders have a lead time of 3 business days.",
+        "expected_sources": [
+          "tata_steel_contract.md"
+        ],
+        "expected_intent": "document",
+        "top_k": 5
+      },
+      "answer": "Per Section 3. Delivery Commitments of tata_steel_contract.md, the lead time for rush orders is 3 business days.",
+      "chunks": [
+        {
+          "source": "tata_steel_contract.md",
+          "section": "1. SLA Terms",
+          "score": 0.5428505389747642,
+          "text": "## 1. SLA Terms\n\n### Delivery Performance\nOn-time delivery rate must be minimum 95%. Lead time is 7 business days for standard orders, 3 business days for rush orders. Orders must arrive within plus or minus 1 day of scheduled delivery to qualify as on-time.\n\n### Quality Standards\nMaximum 2% defective units per shipment. Steel coil must meet IS 2062 Grade A standards. Certificate of Conformity and Material Test Reports required with each shipment."
+        },
+        {
+          "source": "tata_steel_contract.md",
+          "section": "preamble",
+          "score": 0.5335989720377696,
+          "text": "# Vendor Contract: Tata Steel\n\n**Contract ID:** VND-2024-001\n**Vendor:** Tata Steel\n**Material:** Steel Coil\n**Effective Date:** January 1, 2024\n**Expiration Date:** December 31, 2025"
+        },
+        {
+          "source": "tata_steel_contract.md",
+          "section": "3. Delivery Commitments",
+          "score": 0.44636899525775137,
+          "text": "## 3. Delivery Commitments\n\nPrimary supply route originates from Jamshedpur Steel Plant in Jharkhand to Mumbai Plant (factory_1) via rail and road multimodal transport. Transit time is 5-7 business days. Backup route goes through Kolkata and activates automatically when primary route transit exceeds 10 days."
+        },
+        {
+          "source": "cyclone_response_protocol.md",
+          "section": "Vendor Notification",
+          "score": 0.3970341520705263,
+          "text": "## Vendor Notification\n\nAll vendors with active shipments on affected routes must be notified within 2 hours of cyclone reaching severe status. Vendors covered under force majeure (see vendor contracts) are exempt from delivery penalties during the cyclone period. Tata Steel (vendor_1) and Reliance Industries (vendor_2) both have force majeure clauses covering natural disasters."
+        },
+        {
+          "source": "shipping_policy.md",
+          "section": "Port Congestion Response",
+          "score": 0.387422949672774,
+          "text": "## Port Congestion Response\n\nWhen a port status is \"congested,\" notify all shippers within 24 hours. If congestion exceeds 3 days, activate modal shift from sea to rail. If congestion exceeds 7 days, escalate to Supply Chain Director and consider emergency procurement from alternative suppliers."
+        }
+      ],
+      "metrics": {
+        "faithfulness": 0.0,
+        "answer_relevance": 0.8365523020426432,
+        "context_precision": 1.0,
+        "context_recall": 1.0,
+        "hit_rate": 1.0,
+        "mrr": 1.0,
+        "router_correct": true,
+        "is_refusal": false
+      },
+      "details": {
+        "faithfulness": {
+          "claims": [],
+          "supported": 0,
+          "total": 0,
+          "note": "no_claims_extracted"
+        },
+        "answer_relevance": {
+          "generated_questions": [
+            "What is the lead time for rush orders according to the Tata Steel contract?",
+            "How long does Tata Steel take to deliver rush orders?",
+            "Can you confirm the delivery time for rush orders as stated in the contract?"
+          ],
+          "per_sim": [
+            0.995937705039978,
+            0.8785918951034546,
+            0.6351273059844971
+          ],
+          "mean": 0.8365523020426432
+        },
+        "context_precision": {
+          "ranked_relevance": [
+            true,
+            false,
+            false,
+            false,
+            false
+          ],
+          "num_relevant": 1
+        },
+        "context_recall": {
+          "sentences": [
+            "Rush orders have a lead time of 3 business days."
+          ],
+          "supported_flags": [
+            true
+          ],
+          "supported": 1,
+          "total": 1
+        }
+      },
+      "latency_s": 5.121179200003098
+    },
+    {
+      "test_case": {
+        "id": "T05",
+        "category": "single_doc",
+        "question": "How quickly must a high severity incident be acknowledged?",
+        "ground_truth": "High severity incidents require acknowledgment within 1 hour and an action plan within 4 hours.",
+        "expected_sources": [
+          "incident_management_sop.md"
+        ],
+        "expected_intent": "document",
+        "top_k": 5
+      },
+      "answer": "High severity incidents require acknowledgment within 1 hour, per Section 1 of Response Timelines.",
+      "chunks": [
+        {
+          "source": "incident_management_sop.md",
+          "section": "Response Timelines",
+          "score": 0.7576292258934788,
+          "text": "## Response Timelines\n\nHigh severity incidents require acknowledgment within 1 hour and an action plan within 4 hours. Medium severity requires acknowledgment within 4 hours and action plan within 24 hours. Low severity is handled in the next business day cycle."
+        },
+        {
+          "source": "incident_management_sop.md",
+          "section": "Incident Classification",
+          "score": 0.5942858004508993,
+          "text": "## Incident Classification\n\nIncidents are classified by severity. High severity: complete route or port shutdown, factory offline. Medium severity: partial disruption, reduced capacity, delays under 5 days. Low severity: minor delays, documentation issues."
+        },
+        {
+          "source": "incident_management_sop.md",
+          "section": "preamble",
+          "score": 0.4055024841868668,
+          "text": "# Incident Management SOP"
+        },
+        {
+          "source": "tata_steel_contract.md",
+          "section": "4. Force Majeure",
+          "score": 0.40015382546813894,
+          "text": "## 4. Force Majeure\n\nEvents considered force majeure with no penalties applied: natural disasters including cyclones, earthquakes, and floods. Government-imposed restrictions or lockdowns. Labor strikes at vendor facilities with maximum 15 days coverage. Vendor must notify within 24 hours of force majeure event."
+        },
+        {
+          "source": "cyclone_response_protocol.md",
+          "section": "Post-Cyclone Recovery",
+          "score": 0.34561708531914104,
+          "text": "## Post-Cyclone Recovery\n\nWithin 24 hours of cyclone downgrade, assess port and route infrastructure. Vizag Port must pass safety inspection before resuming full operations. Route_2 requires road condition assessment before reactivation. Expected recovery time: 3-7 days after cyclone passes."
+        }
+      ],
+      "metrics": {
+        "faithfulness": 0.0,
+        "answer_relevance": 0.7962990204493204,
+        "context_precision": 1.0,
+        "context_recall": 1.0,
+        "hit_rate": 1.0,
+        "mrr": 1.0,
+        "router_correct": true,
+        "is_refusal": false
+      },
+      "details": {
+        "faithfulness": {
+          "claims": [],
+          "supported": 0,
+          "total": 0,
+          "note": "no_claims_extracted"
+        },
+        "answer_relevance": {
+          "generated_questions": [
+            "What is the expected response time for high severity incidents according to Response Timelines?",
+            "What is the specified time frame for acknowledging high severity incidents?",
+            "According to Response Timelines, how long is a company expected to take to acknowledge high severity incidents?"
+          ],
+          "per_sim": [
+            0.6985151171684265,
+            0.8921375870704651,
+            0.7982443571090698
+          ],
+          "mean": 0.7962990204493204
+        },
+        "context_precision": {
+          "ranked_relevance": [
+            true,
+            true,
+            true,
+            false,
+            false
+          ],
+          "num_relevant": 3
+        },
+        "context_recall": {
+          "sentences": [
+            "High severity incidents require acknowledgment within 1 hour and an action plan within 4 hours."
+          ],
+          "supported_flags": [
+            true
+          ],
+          "supported": 1,
+          "total": 1
+        }
+      },
+      "latency_s": 4.079889600005117
+    },
+    {
+      "test_case": {
+        "id": "T06",
+        "category": "single_doc",
+        "question": "What is the backup route if route_1 sea route is disrupted?",
+        "ground_truth": "If route_1 (sea) is disrupted, route_3 (rail) is used as the backup.",
+        "expected_sources": [
+          "shipping_policy.md"
+        ],
+        "expected_intent": "document",
+        "top_k": 5
+      },
+      "answer": "Use route_3 (rail) as a backup. (From Alternative Routing, shipping_policy.md)",
+      "chunks": [
+        {
+          "source": "shipping_policy.md",
+          "section": "Alternative Routing",
+          "score": 0.7087167847456914,
+          "text": "## Alternative Routing\n\nIf route_1 (sea) is disrupted, use route_3 (rail) as backup. If route_2 (land) is disrupted, use route_3 (rail) at an 8% cost premium. All rerouting decisions above 25% cost increase require Supply Chain Director approval."
+        },
+        {
+          "source": "shipping_policy.md",
+          "section": "preamble",
+          "score": 0.5338142380655441,
+          "text": "# Shipping Policy: Route Selection and Disruption Protocols"
+        },
+        {
+          "source": "incident_management_sop.md",
+          "section": "Route Disruption Procedure",
+          "score": 0.49772570031405183,
+          "text": "## Route Disruption Procedure\n\nWhen a route status changes to \"disrupted,\" all pending shipments on that route are flagged. The operations team identifies the root cause (weather, infrastructure, labor). If the disruption is weather-related, check force majeure clauses in vendor contracts before assessing penalties."
+        },
+        {
+          "source": "cyclone_response_protocol.md",
+          "section": "Rerouting During Cyclone",
+          "score": 0.4679939556189036,
+          "text": "## Rerouting During Cyclone\n\nWhen Cyclone Dana is active, route_2 (Chennai-Delhi land route) is suspended. All cargo originally planned for route_2 is redirected to route_3 (Kolkata-Delhi rail route). Vizag Port operations are reduced to emergency-only berthing. Shipments through Vizag are diverted to Chennai Port (port_2)."
+        },
+        {
+          "source": "shipping_policy.md",
+          "section": "Route Selection Rules",
+          "score": 0.46646727995648285,
+          "text": "## Route Selection Rules\n\nRoutes are selected based on transit time, cost, and reliability. For urgent shipments (under 5 days lead time), prioritize speed over cost. For standard shipments, use the lowest-cost active route. No single route should exceed 70% utilization."
+        }
+      ],
+      "metrics": {
+        "faithfulness": 0.0,
+        "answer_relevance": 0.5490796367327372,
+        "context_precision": 0.95,
+        "context_recall": 1.0,
+        "hit_rate": 1.0,
+        "mrr": 1.0,
+        "router_correct": true,
+        "is_refusal": false
+      },
+      "details": {
+        "faithfulness": {
+          "claims": [],
+          "supported": 0,
+          "total": 0,
+          "note": "no_claims_extracted"
+        },
+        "answer_relevance": {
+          "generated_questions": [
+            "What are the alternative shipping options if route_1 (road) is unavailable?",
+            "How do you plan to transport goods if route_2 (air) is not feasible?",
+            "What is the contingency plan for shipping if the primary route is disrupted?"
+          ],
+          "per_sim": [
+            0.582924485206604,
+            0.49580711126327515,
+            0.5685073137283325
+          ],
+          "mean": 0.5490796367327372
+        },
+        "context_precision": {
+          "ranked_relevance": [
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "num_relevant": 4
+        },
+        "context_recall": {
+          "sentences": [
+            "If route_1 (sea) is disrupted, route_3 (rail) is used as the backup."
+          ],
+          "supported_flags": [
+            true
+          ],
+          "supported": 1,
+          "total": 1
+        }
+      },
+      "latency_s": 4.481193899999198
+    },
+    {
+      "test_case": {
+        "id": "T07",
+        "category": "single_doc",
+        "question": "What is the cost increase when diverting cargo from Vizag Port to Chennai Port?",
+        "ground_truth": "Diverting from Vizag Port (port_1) to Chennai Port (port_2) incurs a 12% cost increase.",
+        "expected_sources": [
+          "shipping_policy.md"
+        ],
+        "expected_intent": "document",
+        "top_k": 5
+      },
+      "answer": "Per Section 1 of shipping_policy.md, when Vizag Port is congested, divert to Chennai Port at a 12% cost increase.",
+      "chunks": [
+        {
+          "source": "shipping_policy.md",
+          "section": "Weather Disruption Protocol",
+          "score": 0.6450197516861933,
+          "text": "## Weather Disruption Protocol\n\nWhen a cyclone or severe weather is detected, any route in the affected zone is marked \"disrupted.\" Cargo in transit is held at the nearest port. New shipments are rerouted to the next available active route. If Vizag Port (port_1) is congested, divert to Chennai Port (port_2) at a 12% cost increase."
+        },
+        {
+          "source": "cyclone_response_protocol.md",
+          "section": "Rerouting During Cyclone",
+          "score": 0.4930506087074698,
+          "text": "## Rerouting During Cyclone\n\nWhen Cyclone Dana is active, route_2 (Chennai-Delhi land route) is suspended. All cargo originally planned for route_2 is redirected to route_3 (Kolkata-Delhi rail route). Vizag Port operations are reduced to emergency-only berthing. Shipments through Vizag are diverted to Chennai Port (port_2)."
+        },
+        {
+          "source": "incident_management_sop.md",
+          "section": "Port Congestion Procedure",
+          "score": 0.46926885675393143,
+          "text": "## Port Congestion Procedure\n\nWhen port throughput drops below 60% of capacity, classify as medium severity. Below 30%, classify as high severity. Immediate actions: assess queue depth, identify alternative ports, notify affected vendors. If Vizag Port is congested, priority berthing is negotiated for critical product shipments (Steel Coil, Steel Sheets)."
+        },
+        {
+          "source": "shipping_policy.md",
+          "section": "Port Congestion Response",
+          "score": 0.422260460897821,
+          "text": "## Port Congestion Response\n\nWhen a port status is \"congested,\" notify all shippers within 24 hours. If congestion exceeds 3 days, activate modal shift from sea to rail. If congestion exceeds 7 days, escalate to Supply Chain Director and consider emergency procurement from alternative suppliers."
+        },
+        {
+          "source": "shipping_policy.md",
+          "section": "Alternative Routing",
+          "score": 0.37522583817340477,
+          "text": "## Alternative Routing\n\nIf route_1 (sea) is disrupted, use route_3 (rail) as backup. If route_2 (land) is disrupted, use route_3 (rail) at an 8% cost premium. All rerouting decisions above 25% cost increase require Supply Chain Director approval."
+        }
+      ],
+      "metrics": {
+        "faithfulness": 0.0,
+        "answer_relevance": 0.703075647354126,
+        "context_precision": 1.0,
+        "context_recall": 1.0,
+        "hit_rate": 1.0,
+        "mrr": 1.0,
+        "router_correct": true,
+        "is_refusal": false
+      },
+      "details": {
+        "faithfulness": {
+          "claims": [],
+          "supported": 0,
+          "total": 0,
+          "note": "no_claims_extracted"
+        },
+        "answer_relevance": {
+          "generated_questions": [
+            "In the event of Vizag Port congestion, what is the recommended alternative port and associated cost implications?",
+            "What is the protocol for handling shipments when Vizag Port is congested, and what is the impact on shipping costs?",
+            "If Vizag Port is unable to handle shipments due to congestion, which port would be used as a substitute and what percentage increase in cost would be incurred?"
+          ],
+          "per_sim": [
+            0.701799750328064,
+            0.6943618655204773,
+            0.7130653262138367
+          ],
+          "mean": 0.703075647354126
+        },
+        "context_precision": {
+          "ranked_relevance": [
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "num_relevant": 2
+        },
+        "context_recall": {
+          "sentences": [
+            "Diverting from Vizag Port (port_1) to Chennai Port (port_2) incurs a 12% cost increase."
+          ],
+          "supported_flags": [
+            true
+          ],
+          "supported": 1,
+          "total": 1
+        }
+      },
+      "latency_s": 5.496228700001666
+    },
+    {
+      "test_case": {
+        "id": "T08",
+        "category": "single_doc",
+        "question": "What happens when the defect rate in a Tata Steel shipment exceeds 10%?",
+        "ground_truth": "A defect rate above 10% requires full replacement at vendor cost plus a 10% penalty.",
+        "expected_sources": [
+          "tata_steel_contract.md"
+        ],
+        "expected_intent": "document",
+        "top_k": 5
+      },
+      "answer": "Per Section 2. Penalty Structure of tata_steel_contract.md, when the defect rate exceeds 10%, Tata Steel is responsible for full replacement at vendor cost plus a 10% penalty.",
+      "chunks": [
+        {
+          "source": "tata_steel_contract.md",
+          "section": "preamble",
+          "score": 0.5046738777880881,
+          "text": "# Vendor Contract: Tata Steel\n\n**Contract ID:** VND-2024-001\n**Vendor:** Tata Steel\n**Material:** Steel Coil\n**Effective Date:** January 1, 2024\n**Expiration Date:** December 31, 2025"
+        },
+        {
+          "source": "tata_steel_contract.md",
+          "section": "2. Penalty Structure",
+          "score": 0.42271032114047663,
+          "text": "## 2. Penalty Structure\n\n### Late Delivery Penalties\n1-2 days late: 2% of order value. 3-5 days late: 5% of order value. 6-10 days late: 10% of order value. More than 10 days late: 15% of order value plus right to cancel.\n\n### Quality Defect Penalties\nDefect rate 2-5%: 5% credit on affected shipment. Defect rate 5-10%: 15% credit plus root cause analysis required. Defect rate above 10%: full replacement at vendor cost plus 10% penalty."
+        },
+        {
+          "source": "cyclone_response_protocol.md",
+          "section": "Vendor Notification",
+          "score": 0.39848939608651957,
+          "text": "## Vendor Notification\n\nAll vendors with active shipments on affected routes must be notified within 2 hours of cyclone reaching severe status. Vendors covered under force majeure (see vendor contracts) are exempt from delivery penalties during the cyclone period. Tata Steel (vendor_1) and Reliance Industries (vendor_2) both have force majeure clauses covering natural disasters."
+        },
+        {
+          "source": "tata_steel_contract.md",
+          "section": "5. Supply Chain References",
+          "score": 0.3823150593368547,
+          "text": "## 5. Supply Chain References\n\nVendor node: vendor_1. Primary factory: factory_1 (Mumbai Plant). Product: product_1 (Steel Coil). Current SLA adherence: 92%. Current reliability score: 0.88."
+        },
+        {
+          "source": "incident_management_sop.md",
+          "section": "Port Congestion Procedure",
+          "score": 0.3639606775821369,
+          "text": "## Port Congestion Procedure\n\nWhen port throughput drops below 60% of capacity, classify as medium severity. Below 30%, classify as high severity. Immediate actions: assess queue depth, identify alternative ports, notify affected vendors. If Vizag Port is congested, priority berthing is negotiated for critical product shipments (Steel Coil, Steel Sheets)."
+        }
+      ],
+      "metrics": {
+        "faithfulness": 0.0,
+        "answer_relevance": 0.7924388647079468,
+        "context_precision": 1.0,
+        "context_recall": 0.0,
+        "hit_rate": 1.0,
+        "mrr": 1.0,
+        "router_correct": true,
+        "is_refusal": false
+      },
+      "details": {
+        "faithfulness": {
+          "claims": [],
+          "supported": 0,
+          "total": 0,
+          "note": "no_claims_extracted"
+        },
+        "answer_relevance": {
+          "generated_questions": [
+            "What is the threshold for penalty to be applied in the Tata Steel contract?",
+            "How does Tata Steel handle defect rates above 10% according to their contract?",
+            "What is the financial implication for Tata Steel when the defect rate exceeds 10% in the contract?"
+          ],
+          "per_sim": [
+            0.6038303971290588,
+            0.8863930106163025,
+            0.887093186378479
+          ],
+          "mean": 0.7924388647079468
+        },
+        "context_precision": {
+          "ranked_relevance": [
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "num_relevant": 2
+        },
+        "context_recall": {
+          "sentences": [
+            "A defect rate above 10% requires full replacement at vendor cost plus a 10% penalty."
+          ],
+          "supported_flags": [
+            false
+          ],
+          "supported": 0,
+          "total": 1
+        }
+      },
+      "latency_s": 6.1228497000047355
+    },
+    {
+      "test_case": {
+        "id": "T09",
+        "category": "single_doc",
+        "question": "Within how many hours must an insurance claim be filed for damaged warehouse inventory?",
+        "ground_truth": "Insurance claims for damaged inventory must be filed within 48 hours.",
+        "expected_sources": [
+          "warehouse_capacity_policy.md"
+        ],
+        "expected_intent": "document",
+        "top_k": 5
+      },
+      "answer": "Insurance claims for damaged inventory must be filed within 48 hours, per Section 1 of warehouse_capacity_policy.md.",
+      "chunks": [
+        {
+          "source": "warehouse_capacity_policy.md",
+          "section": "Warehouse Disruption Handling",
+          "score": 0.6813435089760583,
+          "text": "## Warehouse Disruption Handling\n\nIf a warehouse status changes to \"flooded\" or \"under_maintenance,\" all inbound shipments are redirected to the nearest operational warehouse. Cross-warehouse transfers are authorized for critical products without additional approval. Insurance claims for damaged inventory must be filed within 48 hours."
+        },
+        {
+          "source": "incident_management_sop.md",
+          "section": "Response Timelines",
+          "score": 0.46771731086433693,
+          "text": "## Response Timelines\n\nHigh severity incidents require acknowledgment within 1 hour and an action plan within 4 hours. Medium severity requires acknowledgment within 4 hours and action plan within 24 hours. Low severity is handled in the next business day cycle."
+        },
+        {
+          "source": "incident_management_sop.md",
+          "section": "Factory Maintenance Protocol",
+          "score": 0.3968667835331575,
+          "text": "## Factory Maintenance Protocol\n\nWhen a factory enters \"maintenance\" status, downstream production is halted. Inventory at connected warehouses is assessed. If stock levels fall below minimum threshold (200 units), trigger emergency procurement from backup vendors."
+        },
+        {
+          "source": "warehouse_capacity_policy.md",
+          "section": "preamble",
+          "score": 0.39024397955861945,
+          "text": "# Warehouse Capacity Policy"
+        },
+        {
+          "source": "tata_steel_contract.md",
+          "section": "1. SLA Terms",
+          "score": 0.36913632042811695,
+          "text": "## 1. SLA Terms\n\n### Delivery Performance\nOn-time delivery rate must be minimum 95%. Lead time is 7 business days for standard orders, 3 business days for rush orders. Orders must arrive within plus or minus 1 day of scheduled delivery to qualify as on-time.\n\n### Quality Standards\nMaximum 2% defective units per shipment. Steel coil must meet IS 2062 Grade A standards. Certificate of Conformity and Material Test Reports required with each shipment."
+        }
+      ],
+      "metrics": {
+        "faithfulness": 0.0,
+        "answer_relevance": 0.9113260308901469,
+        "context_precision": 1.0,
+        "context_recall": 0.0,
+        "hit_rate": 1.0,
+        "mrr": 1.0,
+        "router_correct": true,
+        "is_refusal": false
+      },
+      "details": {
+        "faithfulness": {
+          "claims": [],
+          "supported": 0,
+          "total": 0,
+          "note": "no_claims_extracted"
+        },
+        "answer_relevance": {
+          "generated_questions": [
+            "What is the time limit for filing insurance claims for damaged inventory at our warehouse?",
+            "How long do we have to file insurance claims for damaged inventory, according to our warehouse policy?",
+            "What is the deadline for submitting insurance claims for inventory damage at our warehouse, as stated in the policy?"
+          ],
+          "per_sim": [
+            0.9458272457122803,
+            0.9259962439537048,
+            0.8621546030044556
+          ],
+          "mean": 0.9113260308901469
+        },
+        "context_precision": {
+          "ranked_relevance": [
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "num_relevant": 2
+        },
+        "context_recall": {
+          "sentences": [
+            "Insurance claims for damaged inventory must be filed within 48 hours."
+          ],
+          "supported_flags": [
+            false
+          ],
+          "supported": 0,
+          "total": 1
+        }
+      },
+      "latency_s": 4.372365499999432
+    },
+    {
+      "test_case": {
+        "id": "T10",
+        "category": "single_doc",
+        "question": "What port throughput level triggers a high severity classification?",
+        "ground_truth": "When port throughput drops below 30% of capacity, the incident is classified as high severity.",
+        "expected_sources": [
+          "incident_management_sop.md"
+        ],
+        "expected_intent": "document",
+        "top_k": 5
+      },
+      "answer": "Below 30% of capacity, as stated in Section: Port Congestion Procedure of incident_management_sop.md.",
+      "chunks": [
+        {
+          "source": "incident_management_sop.md",
+          "section": "Port Congestion Procedure",
+          "score": 0.636596432621312,
+          "text": "## Port Congestion Procedure\n\nWhen port throughput drops below 60% of capacity, classify as medium severity. Below 30%, classify as high severity. Immediate actions: assess queue depth, identify alternative ports, notify affected vendors. If Vizag Port is congested, priority berthing is negotiated for critical product shipments (Steel Coil, Steel Sheets)."
+        },
+        {
+          "source": "incident_management_sop.md",
+          "section": "Incident Classification",
+          "score": 0.5598705410548881,
+          "text": "## Incident Classification\n\nIncidents are classified by severity. High severity: complete route or port shutdown, factory offline. Medium severity: partial disruption, reduced capacity, delays under 5 days. Low severity: minor delays, documentation issues."
+        },
+        {
+          "source": "shipping_policy.md",
+          "section": "Port Congestion Response",
+          "score": 0.3790498841391895,
+          "text": "## Port Congestion Response\n\nWhen a port status is \"congested,\" notify all shippers within 24 hours. If congestion exceeds 3 days, activate modal shift from sea to rail. If congestion exceeds 7 days, escalate to Supply Chain Director and consider emergency procurement from alternative suppliers."
+        },
+        {
+          "source": "shipping_policy.md",
+          "section": "Weather Disruption Protocol",
+          "score": 0.34939355552315327,
+          "text": "## Weather Disruption Protocol\n\nWhen a cyclone or severe weather is detected, any route in the affected zone is marked \"disrupted.\" Cargo in transit is held at the nearest port. New shipments are rerouted to the next available active route. If Vizag Port (port_1) is congested, divert to Chennai Port (port_2) at a 12% cost increase."
+        },
+        {
+          "source": "cyclone_response_protocol.md",
+          "section": "Monitoring",
+          "score": 0.322281391003844,
+          "text": "## Monitoring\n\nThe supply chain control tower tracks cyclone systems in the Bay of Bengal and Arabian Sea. Cyclone Dana is currently active with high severity, affecting Vizag Port (port_1) and the Chennai-Delhi Land Route (route_2)."
+        }
+      ],
+      "metrics": {
+        "faithfulness": 1.0,
+        "answer_relevance": 0.5648551980654398,
+        "context_precision": 1.0,
+        "context_recall": 0.0,
+        "hit_rate": 1.0,
+        "mrr": 1.0,
+        "router_correct": true,
+        "is_refusal": false
+      },
+      "details": {
+        "faithfulness": {
+          "claims": [
+            "However, I don't see an answer below for me to extract factual claims from. Please provide the answer, and I'll extract the distinct factual claims in a JSON array format."
+          ],
+          "supported_flags": [
+            true
+          ],
+          "supported": 1,
+          "total": 1
+        },
+        "answer_relevance": {
+          "generated_questions": [
+            "What percentage of port capacity must be reached before port congestion procedures are triggered?",
+            "According to the incident management SOP, what is the threshold for port congestion?",
+            "At what level of port utilization does the congestion procedure in the incident management SOP kick in?"
+          ],
+          "per_sim": [
+            0.5482701659202576,
+            0.6001971960067749,
+            0.5460982322692871
+          ],
+          "mean": 0.5648551980654398
+        },
+        "context_precision": {
+          "ranked_relevance": [
+            true,
+            true,
+            true,
+            false,
+            false
+          ],
+          "num_relevant": 3
+        },
+        "context_recall": {
+          "sentences": [
+            "When port throughput drops below 30% of capacity, the incident is classified as high severity."
+          ],
+          "supported_flags": [
+            false
+          ],
+          "supported": 0,
+          "total": 1
+        }
+      },
+      "latency_s": 4.657094100002723
+    },
+    {
+      "test_case": {
+        "id": "T11",
+        "category": "multi_doc",
+        "question": "Is Tata Steel exempt from delivery penalties during a cyclone, and what procedure applies to routes affected by the weather?",
+        "ground_truth": "Yes. The Tata Steel contract includes a force majeure clause covering natural disasters including cyclones, with no penalties applied. During an active cyclone, affected routes such as route_2 are suspended and cargo is redirected \u2014 for example, to route_3 (Kolkata-Delhi rail). Vizag Port operations are reduced to emergency-only berthing, with shipments diverted to Chennai Port.",
+        "expected_sources": [
+          "tata_steel_contract.md",
+          "cyclone_response_protocol.md"
+        ],
+        "expected_intent": "document",
+        "top_k": 7
+      },
+      "answer": "Tata Steel is exempt from delivery penalties during the cyclone period due to their force majeure clause (Section 2. Vendor Notification of cyclone_response_protocol.md). When a route is affected by weather, the operations team identifies the root cause and checks force majeure clauses in vendor contracts before assessing penalties (Section 2. Route Disruption Procedure of incident_management_sop.md).",
+      "chunks": [
+        {
+          "source": "cyclone_response_protocol.md",
+          "section": "Vendor Notification",
+          "score": 0.7075816930501146,
+          "text": "## Vendor Notification\n\nAll vendors with active shipments on affected routes must be notified within 2 hours of cyclone reaching severe status. Vendors covered under force majeure (see vendor contracts) are exempt from delivery penalties during the cyclone period. Tata Steel (vendor_1) and Reliance Industries (vendor_2) both have force majeure clauses covering natural disasters."
+        },
+        {
+          "source": "shipping_policy.md",
+          "section": "Weather Disruption Protocol",
+          "score": 0.5112078628086154,
+          "text": "## Weather Disruption Protocol\n\nWhen a cyclone or severe weather is detected, any route in the affected zone is marked \"disrupted.\" Cargo in transit is held at the nearest port. New shipments are rerouted to the next available active route. If Vizag Port (port_1) is congested, divert to Chennai Port (port_2) at a 12% cost increase."
+        },
+        {
+          "source": "cyclone_response_protocol.md",
+          "section": "Rerouting During Cyclone",
+          "score": 0.4913662532280575,
+          "text": "## Rerouting During Cyclone\n\nWhen Cyclone Dana is active, route_2 (Chennai-Delhi land route) is suspended. All cargo originally planned for route_2 is redirected to route_3 (Kolkata-Delhi rail route). Vizag Port operations are reduced to emergency-only berthing. Shipments through Vizag are diverted to Chennai Port (port_2)."
+        },
+        {
+          "source": "incident_management_sop.md",
+          "section": "Route Disruption Procedure",
+          "score": 0.45637747754482383,
+          "text": "## Route Disruption Procedure\n\nWhen a route status changes to \"disrupted,\" all pending shipments on that route are flagged. The operations team identifies the root cause (weather, infrastructure, labor). If the disruption is weather-related, check force majeure clauses in vendor contracts before assessing penalties."
+        },
+        {
+          "source": "cyclone_response_protocol.md",
+          "section": "Monitoring",
+          "score": 0.4503023945953873,
+          "text": "## Monitoring\n\nThe supply chain control tower tracks cyclone systems in the Bay of Bengal and Arabian Sea. Cyclone Dana is currently active with high severity, affecting Vizag Port (port_1) and the Chennai-Delhi Land Route (route_2)."
+        },
+        {
+          "source": "cyclone_response_protocol.md",
+          "section": "preamble",
+          "score": 0.4415861333642851,
+          "text": "# Cyclone Response Protocol"
+        },
+        {
+          "source": "cyclone_response_protocol.md",
+          "section": "Post-Cyclone Recovery",
+          "score": 0.4280313140396775,
+          "text": "## Post-Cyclone Recovery\n\nWithin 24 hours of cyclone downgrade, assess port and route infrastructure. Vizag Port must pass safety inspection before resuming full operations. Route_2 requires road condition assessment before reactivation. Expected recovery time: 3-7 days after cyclone passes."
+        }
+      ],
+      "metrics": {
+        "faithfulness": 0.75,
+        "answer_relevance": 0.6265904704729716,
+        "context_precision": 0.9166666666666666,
+        "context_recall": 0.75,
+        "hit_rate": 1.0,
+        "mrr": 1.0,
+        "router_correct": true,
+        "is_refusal": false
+      },
+      "details": {
+        "faithfulness": {
+          "claims": [
+            "Tata Steel is exempt from delivery penalties",
+            "The exemption is due to their force majeure clause",
+            "The force majeure clause is located in Section 2 of the vendor contract",
+            "The clause is documented in cyclone_response_protocol.md",
+            "When a route is affected by weather, the operations team identifies the root cause",
+            "The operations team checks force majeure clauses in vendor contracts",
+            "Force majeure clauses are used to assess penalties for route disruptions",
+            "The clause is located in Section 2 of the incident management SOP"
+          ],
+          "supported_flags": [
+            true,
+            true,
+            false,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "supported": 6,
+          "total": 8
+        },
+        "answer_relevance": {
+          "generated_questions": [
+            "What exemptions are available to Tata Steel during severe weather events?",
+            "How does Tata Steel's force majeure clause impact delivery penalties?",
+            "What procedures are in place for assessing penalties on affected routes during weather events?"
+          ],
+          "per_sim": [
+            0.7547883987426758,
+            0.5962080955505371,
+            0.5287749171257019
+          ],
+          "mean": 0.6265904704729716
+        },
+        "context_precision": {
+          "ranked_relevance": [
+            true,
+            true,
+            true,
+            false,
+            false,
+            true,
+            false
+          ],
+          "num_relevant": 4
+        },
+        "context_recall": {
+          "sentences": [
+            "Yes.",
+            "The Tata Steel contract includes a force majeure clause covering natural disasters including cyclones, with no penalties applied.",
+            "During an active cyclone, affected routes such as route_2 are suspended and cargo is redirected \u2014 for example, to route_3 (Kolkata-Delhi rail).",
+            "Vizag Port operations are reduced to emergency-only berthing, with shipments diverted to Chennai Port."
+          ],
+          "supported_flags": [
+            true,
+            false,
+            true,
+            true
+          ],
+          "supported": 3,
+          "total": 4
+        }
+      },
+      "latency_s": 9.053980600001523
+    },
+    {
+      "test_case": {
+        "id": "T12",
+        "category": "multi_doc",
+        "question": "If Vizag Port has been congested for more than 7 days, what actions are required according to both the shipping policy and the incident management SOP?",
+        "ground_truth": "Per the shipping policy, congestion exceeding 7 days requires escalation to the Supply Chain Director and consideration of emergency procurement from alternative suppliers. Per the incident management SOP, if port throughput drops below 30%, it is classified as high severity requiring acknowledgment within 1 hour and an action plan within 4 hours. Priority berthing for critical products such as Steel Coil should also be negotiated.",
+        "expected_sources": [
+          "shipping_policy.md",
+          "incident_management_sop.md"
+        ],
+        "expected_intent": "document",
+        "top_k": 7
+      },
+      "answer": "Per Section 4. Port Congestion Response of shipping_policy.md, if congestion exceeds 7 days, escalate to Supply Chain Director and consider emergency procurement from alternative suppliers. Per Section 1. Port Congestion Procedure of incident_management_sop.md, classify the congestion as high severity and immediate actions are required, including assessing queue depth, identifying alternative ports, notifying affected vendors.",
+      "chunks": [
+        {
+          "source": "incident_management_sop.md",
+          "section": "Port Congestion Procedure",
+          "score": 0.667013485310159,
+          "text": "## Port Congestion Procedure\n\nWhen port throughput drops below 60% of capacity, classify as medium severity. Below 30%, classify as high severity. Immediate actions: assess queue depth, identify alternative ports, notify affected vendors. If Vizag Port is congested, priority berthing is negotiated for critical product shipments (Steel Coil, Steel Sheets)."
+        },
+        {
+          "source": "shipping_policy.md",
+          "section": "Port Congestion Response",
+          "score": 0.6341391903769873,
+          "text": "## Port Congestion Response\n\nWhen a port status is \"congested,\" notify all shippers within 24 hours. If congestion exceeds 3 days, activate modal shift from sea to rail. If congestion exceeds 7 days, escalate to Supply Chain Director and consider emergency procurement from alternative suppliers."
+        },
+        {
+          "source": "shipping_policy.md",
+          "section": "Weather Disruption Protocol",
+          "score": 0.5975849703357182,
+          "text": "## Weather Disruption Protocol\n\nWhen a cyclone or severe weather is detected, any route in the affected zone is marked \"disrupted.\" Cargo in transit is held at the nearest port. New shipments are rerouted to the next available active route. If Vizag Port (port_1) is congested, divert to Chennai Port (port_2) at a 12% cost increase."
+        },
+        {
+          "source": "cyclone_response_protocol.md",
+          "section": "Post-Cyclone Recovery",
+          "score": 0.5426634082897956,
+          "text": "## Post-Cyclone Recovery\n\nWithin 24 hours of cyclone downgrade, assess port and route infrastructure. Vizag Port must pass safety inspection before resuming full operations. Route_2 requires road condition assessment before reactivation. Expected recovery time: 3-7 days after cyclone passes."
+        },
+        {
+          "source": "cyclone_response_protocol.md",
+          "section": "Rerouting During Cyclone",
+          "score": 0.46428509692830894,
+          "text": "## Rerouting During Cyclone\n\nWhen Cyclone Dana is active, route_2 (Chennai-Delhi land route) is suspended. All cargo originally planned for route_2 is redirected to route_3 (Kolkata-Delhi rail route). Vizag Port operations are reduced to emergency-only berthing. Shipments through Vizag are diverted to Chennai Port (port_2)."
+        },
+        {
+          "source": "warehouse_capacity_policy.md",
+          "section": "Warehouse Disruption Handling",
+          "score": 0.45974355974227477,
+          "text": "## Warehouse Disruption Handling\n\nIf a warehouse status changes to \"flooded\" or \"under_maintenance,\" all inbound shipments are redirected to the nearest operational warehouse. Cross-warehouse transfers are authorized for critical products without additional approval. Insurance claims for damaged inventory must be filed within 48 hours."
+        },
+        {
+          "source": "cyclone_response_protocol.md",
+          "section": "Vendor Notification",
+          "score": 0.4508723610900876,
+          "text": "## Vendor Notification\n\nAll vendors with active shipments on affected routes must be notified within 2 hours of cyclone reaching severe status. Vendors covered under force majeure (see vendor contracts) are exempt from delivery penalties during the cyclone period. Tata Steel (vendor_1) and Reliance Industries (vendor_2) both have force majeure clauses covering natural disasters."
+        }
+      ],
+      "metrics": {
+        "faithfulness": 0.42857142857142855,
+        "answer_relevance": 0.638011117776235,
+        "context_precision": 1.0,
+        "context_recall": 0.0,
+        "hit_rate": 1.0,
+        "mrr": 1.0,
+        "router_correct": true,
+        "is_refusal": false
+      },
+      "details": {
+        "faithfulness": {
+          "claims": [
+            "Congestion exceeding 7 days is escalated to the Supply Chain Director.",
+            "Emergency procurement from alternative suppliers is considered when congestion exceeds 7 days.",
+            "Congestion exceeding 7 days is classified as high severity.",
+            "Immediate actions are required when congestion is classified as high severity.",
+            "Queue depth is assessed when congestion is classified as high severity.",
+            "Alternative ports are identified when congestion is classified as high severity.",
+            "Affected vendors are notified when congestion is classified as high severity."
+          ],
+          "supported_flags": [
+            true,
+            true,
+            false,
+            true,
+            false,
+            false,
+            false
+          ],
+          "supported": 3,
+          "total": 7
+        },
+        "answer_relevance": {
+          "generated_questions": [
+            "How should port congestion exceeding 7 days be handled, according to shipping_policy.md?",
+            "What steps should be taken in the event of port congestion that meets the criteria for high severity in incident_management_sop.md?",
+            "What are the immediate actions required when port congestion is classified as high severity, as per incident_management_sop.md?"
+          ],
+          "per_sim": [
+            0.5822777152061462,
+            0.6800950765609741,
+            0.6516605615615845
+          ],
+          "mean": 0.638011117776235
+        },
+        "context_precision": {
+          "ranked_relevance": [
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "num_relevant": 2
+        },
+        "context_recall": {
+          "sentences": [
+            "Per the shipping policy, congestion exceeding 7 days requires escalation to the Supply Chain Director and consideration of emergency procurement from alternative suppliers.",
+            "Per the incident management SOP, if port throughput drops below 30%, it is classified as high severity requiring acknowledgment within 1 hour and an action plan within 4 hours.",
+            "Priority berthing for critical products such as Steel Coil should also be negotiated."
+          ],
+          "supported_flags": [
+            false,
+            false,
+            false
+          ],
+          "supported": 0,
+          "total": 3
+        }
+      },
+      "latency_s": 8.95214290000149
+    },
+    {
+      "test_case": {
+        "id": "T13",
+        "category": "unanswerable",
+        "question": "What is the vendor support phone number for Tata Steel?",
+        "ground_truth": null,
+        "expected_sources": [],
+        "expected_intent": "document",
+        "top_k": 5
+      },
+      "answer": "I don't have enough information in the provided documents to answer this question.",
+      "chunks": [
+        {
+          "source": "tata_steel_contract.md",
+          "section": "preamble",
+          "score": 0.7448432460045613,
+          "text": "# Vendor Contract: Tata Steel\n\n**Contract ID:** VND-2024-001\n**Vendor:** Tata Steel\n**Material:** Steel Coil\n**Effective Date:** January 1, 2024\n**Expiration Date:** December 31, 2025"
+        },
+        {
+          "source": "cyclone_response_protocol.md",
+          "section": "Vendor Notification",
+          "score": 0.4203711105043758,
+          "text": "## Vendor Notification\n\nAll vendors with active shipments on affected routes must be notified within 2 hours of cyclone reaching severe status. Vendors covered under force majeure (see vendor contracts) are exempt from delivery penalties during the cyclone period. Tata Steel (vendor_1) and Reliance Industries (vendor_2) both have force majeure clauses covering natural disasters."
+        },
+        {
+          "source": "tata_steel_contract.md",
+          "section": "5. Supply Chain References",
+          "score": 0.418704024036464,
+          "text": "## 5. Supply Chain References\n\nVendor node: vendor_1. Primary factory: factory_1 (Mumbai Plant). Product: product_1 (Steel Coil). Current SLA adherence: 92%. Current reliability score: 0.88."
+        },
+        {
+          "source": "tata_steel_contract.md",
+          "section": "3. Delivery Commitments",
+          "score": 0.33844700739295325,
+          "text": "## 3. Delivery Commitments\n\nPrimary supply route originates from Jamshedpur Steel Plant in Jharkhand to Mumbai Plant (factory_1) via rail and road multimodal transport. Transit time is 5-7 business days. Backup route goes through Kolkata and activates automatically when primary route transit exceeds 10 days."
+        },
+        {
+          "source": "warehouse_capacity_policy.md",
+          "section": "Reorder Process",
+          "score": 0.3126810931149928,
+          "text": "## Reorder Process\n\nWhen stock at any warehouse hits the reorder trigger (250 units), an automatic purchase order is generated to the primary vendor. Delhi Hub currently holds 450 units (above threshold). Bangalore Hub currently holds 280 units (near reorder trigger). Reorder quantity is calculated as maximum capacity minus current stock."
+        }
+      ],
+      "metrics": {
+        "faithfulness": 1.0,
+        "answer_relevance": 0.95,
+        "context_precision": 1.0,
+        "context_recall": 1.0,
+        "hit_rate": 1.0,
+        "mrr": 1.0,
+        "router_correct": true,
+        "is_refusal": true
+      },
+      "details": {
+        "faithfulness": {
+          "claims": [],
+          "supported": 0,
+          "total": 0,
+          "note": "correct_refusal"
+        },
+        "answer_relevance": {
+          "generated_questions": [],
+          "per_sim": [],
+          "mean": 0.95,
+          "note": "correct_refusal"
+        },
+        "context_precision": {
+          "ranked_relevance": [
+            true,
+            false,
+            false,
+            false,
+            false
+          ],
+          "num_relevant": 1
+        },
+        "context_recall": {
+          "sentences": [],
+          "supported": 0,
+          "total": 0,
+          "note": "no_ground_truth"
+        }
+      },
+      "latency_s": 4.143474500000593
+    },
+    {
+      "test_case": {
+        "id": "T14",
+        "category": "unanswerable",
+        "question": "What is the current price per ton of steel coil?",
+        "ground_truth": null,
+        "expected_sources": [],
+        "expected_intent": "document",
+        "top_k": 5
+      },
+      "answer": "I don't have enough information in the provided documents to answer this question.",
+      "chunks": [
+        {
+          "source": "tata_steel_contract.md",
+          "section": "preamble",
+          "score": 0.4833454167712811,
+          "text": "# Vendor Contract: Tata Steel\n\n**Contract ID:** VND-2024-001\n**Vendor:** Tata Steel\n**Material:** Steel Coil\n**Effective Date:** January 1, 2024\n**Expiration Date:** December 31, 2025"
+        },
+        {
+          "source": "tata_steel_contract.md",
+          "section": "1. SLA Terms",
+          "score": 0.43272692053450035,
+          "text": "## 1. SLA Terms\n\n### Delivery Performance\nOn-time delivery rate must be minimum 95%. Lead time is 7 business days for standard orders, 3 business days for rush orders. Orders must arrive within plus or minus 1 day of scheduled delivery to qualify as on-time.\n\n### Quality Standards\nMaximum 2% defective units per shipment. Steel coil must meet IS 2062 Grade A standards. Certificate of Conformity and Material Test Reports required with each shipment."
+        },
+        {
+          "source": "tata_steel_contract.md",
+          "section": "5. Supply Chain References",
+          "score": 0.40502914131563794,
+          "text": "## 5. Supply Chain References\n\nVendor node: vendor_1. Primary factory: factory_1 (Mumbai Plant). Product: product_1 (Steel Coil). Current SLA adherence: 92%. Current reliability score: 0.88."
+        },
+        {
+          "source": "warehouse_capacity_policy.md",
+          "section": "Critical Product Priority",
+          "score": 0.351298479062998,
+          "text": "## Critical Product Priority\n\nProducts marked as \"critical\" priority (Steel Coil, Steel Sheets) receive preferential warehouse allocation. During capacity constraints, standard priority products (Petrochemical Products) are deprioritized. Critical products must maintain a minimum 30-day supply buffer."
+        },
+        {
+          "source": "warehouse_capacity_policy.md",
+          "section": "preamble",
+          "score": 0.2368627052844155,
+          "text": "# Warehouse Capacity Policy"
+        }
+      ],
+      "metrics": {
+        "faithfulness": 1.0,
+        "answer_relevance": 0.95,
+        "context_precision": 1.0,
+        "context_recall": 1.0,
+        "hit_rate": 1.0,
+        "mrr": 1.0,
+        "router_correct": true,
+        "is_refusal": true
+      },
+      "details": {
+        "faithfulness": {
+          "claims": [],
+          "supported": 0,
+          "total": 0,
+          "note": "correct_refusal"
+        },
+        "answer_relevance": {
+          "generated_questions": [],
+          "per_sim": [],
+          "mean": 0.95,
+          "note": "correct_refusal"
+        },
+        "context_precision": {
+          "ranked_relevance": [
+            true,
+            false,
+            false,
+            false,
+            false
+          ],
+          "num_relevant": 1
+        },
+        "context_recall": {
+          "sentences": [],
+          "supported": 0,
+          "total": 0,
+          "note": "no_ground_truth"
+        }
+      },
+      "latency_s": 4.020947199998773
+    },
+    {
+      "test_case": {
+        "id": "T15",
+        "category": "unanswerable",
+        "question": "What is the annual insurance premium rate for warehouse inventory?",
+        "ground_truth": null,
+        "expected_sources": [],
+        "expected_intent": "document",
+        "top_k": 5
+      },
+      "answer": "I don't have enough information in the provided documents to answer this question.",
+      "chunks": [
+        {
+          "source": "warehouse_capacity_policy.md",
+          "section": "preamble",
+          "score": 0.49273538787549787,
+          "text": "# Warehouse Capacity Policy"
+        },
+        {
+          "source": "warehouse_capacity_policy.md",
+          "section": "Inventory Reconciliation",
+          "score": 0.4089351623992618,
+          "text": "## Inventory Reconciliation\n\nMonthly physical inventory counts are mandatory. Variance above 3% triggers an audit. All product movements between warehouses must be logged with timestamps and authorization codes."
+        },
+        {
+          "source": "warehouse_capacity_policy.md",
+          "section": "Warehouse Disruption Handling",
+          "score": 0.39970626181126334,
+          "text": "## Warehouse Disruption Handling\n\nIf a warehouse status changes to \"flooded\" or \"under_maintenance,\" all inbound shipments are redirected to the nearest operational warehouse. Cross-warehouse transfers are authorized for critical products without additional approval. Insurance claims for damaged inventory must be filed within 48 hours."
+        },
+        {
+          "source": "warehouse_capacity_policy.md",
+          "section": "Stock Level Thresholds",
+          "score": 0.382781770535194,
+          "text": "## Stock Level Thresholds\n\nEach warehouse has defined stock thresholds. Minimum stock level: 200 units. Reorder trigger: 250 units. Maximum capacity: Delhi Hub (warehouse_1) holds 800 units, Bangalore Hub (warehouse_2) holds 600 units. When stock drops below minimum, emergency replenishment is triggered."
+        },
+        {
+          "source": "warehouse_capacity_policy.md",
+          "section": "Reorder Process",
+          "score": 0.34749606409880307,
+          "text": "## Reorder Process\n\nWhen stock at any warehouse hits the reorder trigger (250 units), an automatic purchase order is generated to the primary vendor. Delhi Hub currently holds 450 units (above threshold). Bangalore Hub currently holds 280 units (near reorder trigger). Reorder quantity is calculated as maximum capacity minus current stock."
+        }
+      ],
+      "metrics": {
+        "faithfulness": 1.0,
+        "answer_relevance": 0.95,
+        "context_precision": 0.0,
+        "context_recall": 1.0,
+        "hit_rate": 1.0,
+        "mrr": 1.0,
+        "router_correct": true,
+        "is_refusal": true
+      },
+      "details": {
+        "faithfulness": {
+          "claims": [],
+          "supported": 0,
+          "total": 0,
+          "note": "correct_refusal"
+        },
+        "answer_relevance": {
+          "generated_questions": [],
+          "per_sim": [],
+          "mean": 0.95,
+          "note": "correct_refusal"
+        },
+        "context_precision": {
+          "ranked_relevance": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "num_relevant": 0
+        },
+        "context_recall": {
+          "sentences": [],
+          "supported": 0,
+          "total": 0,
+          "note": "no_ground_truth"
+        }
+      },
+      "latency_s": 3.8662210000038613
+    }
+  ],
+  "ragas_library_scores": null
+}
