@@ -26,21 +26,7 @@
 
 The system is a **Supply Chain Decision Intelligence** prototype with 5 specialized agents orchestrated by LangGraph.
 
-```
-User Query
-    |
-    v
-LLM Router (Ollama -> Groq -> Keywords)
-    |
-    +--> Query Handler      -> graph state lookup
-    +--> RCA Handler        -> DFS upstream traversal
-    +--> Simulate Handler   -> deep copy + what-if
-    +--> Action Handler     -> human approval -> graph modify
-    +--> Document Handler   -> RAG retrieval from Qdrant
-    |
-    v
-Streamlit UI (graph viz + results + citations)
-```
+![System Architecture](diagrams/sys_diag.png)
 
 > [!info] Core Insight
 > The system combines **structured data** (knowledge graph) with **unstructured data** (documents via RAG). Graph tells you WHAT is happening. Documents tell you WHAT TO DO about it.
