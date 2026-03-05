@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: pageindex
+      POSTGRES_PASSWORD: pageindex
+      POSTGRES_DB: pageindex
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    # Adjust build context to your cloned PageIndex API directory
+    build:
+      context: ../../PageIndex
+      dockerfile: ./apps/api/Dockerfile
+    environment:
+      DATABASE_URL: postgres://pageindex:pageindex@db:5432/pageindex
+      PORT: 8080
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+
+  web:
+    build:
+      context: ../../PageIndex
+      dockerfile: ./apps/web/Dockerfile
+    environment:
+      NEXT_PUBLIC_PAGEINDEX_API_URL: http://api:8080
+      PORT: 3000
+    depends_on:
+      - api
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:

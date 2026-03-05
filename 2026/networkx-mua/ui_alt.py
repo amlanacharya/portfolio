@@ -3,13 +3,14 @@ import json
 import os
 import re
 import time
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 import matplotlib.pyplot as plt
 import networkx as nx
 import requests
 import streamlit as st
 
+from pageindex_client import PageIndexClient
 from knowledge_graph import NodeType, build_supply_chain_graph
 from agent_tools import (
     execute_action as _execute_action,
@@ -46,6 +47,15 @@ if "chat_messages" not in st.session_state:
 
 if "last_llm_backend" not in st.session_state:
     st.session_state.last_llm_backend = "fallback"
+
+if "pageindex_results" not in st.session_state:
+    st.session_state.pageindex_results = []
+
+if "pageindex_latency" not in st.session_state:
+    st.session_state.pageindex_latency = None
+
+if "pageindex_error" not in st.session_state:
+    st.session_state.pageindex_error = None
 
 
 def visualize_graph(G: nx.DiGraph, highlight_node: str = None):
@@ -214,6 +224,23 @@ def _compact_result(result: Dict[str, Any]) -> Dict[str, Any]:
         compact["documents"] = docs
 
     return compact
+
+
+def _format_tree(node: Dict[str, Any], depth: int = 0, lines: Optional[list] = None) -> str:
+    if lines is None:
+        lines = []
+    label = node.get("title") or node.get("name") or node.get("text") or node.get("summary") or "step"
+    detail = node.get("reason") or node.get("description") or ""
+    score = node.get("score")
+    suffix = ""
+    if score is not None:
+        suffix += f" [score: {score}]"
+    if detail:
+        suffix += f" — {detail}"
+    lines.append(("  " * depth) + f"- {label}{suffix}")
+    for child in node.get("children", []) or []:
+        _format_tree(child, depth + 1, lines)
+    return "\n".join(lines)
 
 
 def _fallback_answer(user_query: str, intent: str, result: Dict[str, Any]) -> str:
@@ -788,3 +815,55 @@ with st.container(border=True):
                 st.info("Run a document query to see citations.")
         else:
             st.info("No queries yet.")
+
+# PageIndex vectorless RAG section
+st.markdown("---")
+with st.container(border=True):
+    st.subheader("PageIndex RAG (Vectorless)")
+    api_url = os.environ.get("PAGEINDEX_API_URL", "http://localhost:8080")
+    site_id = os.environ.get("PAGEINDEX_SITE_ID")
+    api_key = os.environ.get("PAGEINDEX_API_KEY")
+
+    if not site_id or not api_key:
+        st.warning("PAGEINDEX_SITE_ID or PAGEINDEX_API_KEY is not set. Configure .env to enable PageIndex queries.")
+
+    col_pi_input, col_pi_meta = st.columns([3, 1])
+    with col_pi_input:
+        pi_query = st.text_input(
+            "Ask PageIndex (vectorless RAG)",
+            key="pageindex_query",
+            placeholder="e.g., What is the penalty for late delivery?",
+        )
+    with col_pi_meta:
+        st.caption(f"API: {api_url}")
+        st.caption(f"Site: {site_id or 'not set'}")
+
+    run_pi = st.button("Run (PageIndex)", key="run_pageindex", type="primary", use_container_width=True)
+    if run_pi and pi_query:
+        start = time.time()
+        try:
+            pi_client = PageIndexClient(api_url=api_url, api_key=api_key, site_id=site_id)
+            st.session_state.pageindex_results = pi_client.search(pi_query, top_k=5)
+            st.session_state.pageindex_error = None
+        except Exception as exc:
+            st.session_state.pageindex_results = []
+            st.session_state.pageindex_error = str(exc)
+        st.session_state.pageindex_latency = time.time() - start
+
+    if st.session_state.pageindex_latency is not None:
+        st.caption(
+            f"Last query latency: {st.session_state.pageindex_latency:.3f}s | Backend: PageIndex | Results: {len(st.session_state.pageindex_results)}"
+        )
+
+    if st.session_state.pageindex_error:
+        st.error(st.session_state.pageindex_error)
+
+    for idx, res in enumerate(st.session_state.pageindex_results):
+        with st.expander(f"[{idx+1}] {res.source or 'source?'} — {res.section or 'section?'} | score={res.score}", expanded=False):
+            st.write(res.text[:800] + ("..." if len(res.text) > 800 else ""))
+            if res.url:
+                st.caption(f"URL: {res.url}")
+            if res.tree:
+                st.markdown("**Trace / Tree**")
+                tree_str = _format_tree(res.tree)
+                st.markdown(tree_str)
