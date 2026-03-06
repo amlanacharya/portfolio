@@ -18,7 +18,7 @@ from agent_tools import (
     query_state as _query_state,
     simulate_change as _simulate_change,
 )
-from llm_router import keyword_router, llm_router
+from llm_router import keyword_router, llm_router, _entity_index
 from retrieval import search_docs
 
 st.set_page_config(
@@ -133,18 +133,18 @@ def handle_document(query: str) -> Dict[str, Any]:
     return {"type": "document", "query": query, "documents": docs}
 
 
+def classify_intent_and_entity(query: str) -> dict:
+    result = llm_router({"query": query})
+    return {
+        "intent": result.get("intent", "document"),
+        "node_id": result.get("node_id", "unknown"),
+        "changes": result.get("changes") or {},
+    }
+
+
 def classify_intent(query: str) -> str:
-    llm_result = llm_router({"query": query})
-    if llm_result:
-        return llm_result.get("intent", "query")
-
-    kw_result = keyword_router({"query": query})
-    return kw_result.get("intent", "query")
-
-
-def extract_node_id(query: str) -> str:
-    match = re.search(r"(warehouse|port|factory|vendor|product|route|event)_\d+", query.lower())
-    return match.group(0) if match else ""
+    """Thin wrapper kept for backward compatibility."""
+    return classify_intent_and_entity(query)["intent"]
 
 
 def extract_changes(query: str) -> Dict:
@@ -398,23 +398,40 @@ def process_user_turn(user_query: str) -> None:
 
     st.session_state.chat_messages.append({"role": "user", "content": clean_query})
 
-    intent = classify_intent(clean_query)
-    node_id = extract_node_id(clean_query)
-    changes = extract_changes(clean_query)
+    routing = classify_intent_and_entity(clean_query)
+    intent = routing["intent"]
+    node_id = routing["node_id"]
+    kw_changes = extract_changes(clean_query)
+    changes = {**kw_changes, **(routing["changes"] or {})}
+
+    # Ambiguity guard — ask user to be specific before touching graph tools
+    if node_id == "unknown" and intent in {"query", "rca", "simulate", "action"}:
+        known_nodes = ", ".join(
+            f"`{n}`" for n in sorted(set(_entity_index.values()))
+        )
+        msg = (
+            f"I understood your intent as **{intent}** but could not identify "
+            f"which supply chain node you mean.\n\n"
+            f"Try a name like *Vizag Port*, *Tata Steel*, *Delhi Hub*, or an ID "
+            f"like `port_1`, `vendor_1`, etc.\n\n"
+            f"Known nodes: {known_nodes}"
+        )
+        st.session_state.chat_messages.append({"role": "assistant", "content": msg})
+        return
 
     start_time = time.time()
     if intent == "query":
-        result = handle_query(node_id or "port_1")
+        result = handle_query(node_id)
     elif intent == "rca":
-        result = handle_rca(node_id or "warehouse_1")
+        result = handle_rca(node_id)
     elif intent == "simulate":
-        result = handle_simulate(node_id or "port_1", changes or {"status": "operational"})
+        result = handle_simulate(node_id, changes or {"status": "operational"})
     elif intent == "action":
         st.session_state.pending_action = {
-            "node_id": node_id or "port_1",
+            "node_id": node_id,
             "changes": changes or {"status": "operational"},
         }
-        result = handle_action(node_id or "port_1", changes or {"status": "operational"}, approved=False)
+        result = handle_action(node_id, changes or {"status": "operational"}, approved=False)
     elif intent == "document":
         result = handle_document(clean_query)
     else:
