@@ -1,111 +1,13 @@
-"""
-eval_pipeline.py — RAGAS-style evaluation for the networkx-mua supply chain RAG system.
 
-Run from the repo root (C:/portfolio) or from 2026/networkx-mua/ — the script
-fixes its own working directory.
-
-    # Groq backend (default, requires GROQ_API_KEY in .env)
-    python 2026/networkx-mua/eval_pipeline.py
-    python 2026/networkx-mua/eval_pipeline.py --backend groq --model llama-3.3-70b-versatile
-
-    # Ollama backend (local, no API key — requires `ollama serve` + model pulled)
-    python 2026/networkx-mua/eval_pipeline.py --backend ollama
-    python 2026/networkx-mua/eval_pipeline.py --backend ollama --model llama3.2:3b
-
-RAGAS optional comparison:
-    pip install ragas langchain-groq langchain-huggingface     # Groq
-    pip install ragas langchain-ollama langchain-huggingface   # Ollama
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CONCEPTUAL Q&A
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Q1: What is the difference between Faithfulness and Answer Relevance, and when
-    would you see one fail without the other?
-
-Faithfulness (answer → context): every factual claim in the generated answer
-must be grounded in the retrieved context. It catches hallucination — the model
-inventing facts not present in any retrieved document.
-
-Answer Relevance (answer → question): the answer must address what the user
-actually asked. It catches topical drift — the model retrieving correct facts and
-writing a faithful answer, but about the wrong topic.
-
-They are orthogonal:
-  - High faithfulness + low relevance: "The penalty for 1-2 day delays is 2%,
-    and for 3-5 days is 5%." is perfectly grounded in the contract, but answers
-    the wrong question if the user asked "What is the rush order lead time?"
-  - Low faithfulness + high relevance: "The rush order lead time is 5 days." is
-    on-topic but hallucinates — the correct answer is 3 business days.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Q2: Why does context recall require ground truth but faithfulness does not?
-
-Faithfulness checks answer → context: given what was retrieved and what the
-model said, are the claims supported? You only need the answer and the retrieved
-chunks — no external reference required.
-
-Context recall checks ground_truth → context: "Was everything that SHOULD be in
-the context actually retrieved?" You must know what the ideal answer contains
-before you can ask whether the retriever surfaced the evidence for it. Without
-a ground truth reference, you cannot measure what was missed.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Q3: How would you generate synthetic test data without human annotations?
-
-Three approaches:
-  1. Reverse HyDE: for each chunk, prompt the LLM "What question does this
-     passage best answer?" → generates question→passage pairs automatically,
-     with the chunk itself as the ground truth context.
-  2. LLM-as-annotator: feed each document to an LLM, ask it to generate N
-     diverse QA pairs with answers grounded only in the text. A second LLM
-     call verifies that each answer is actually in the source.
-  3. Embedding diversity sampling: embed all chunks, cluster them (k-means or
-     HDBSCAN), then sample one chunk per cluster to ensure full semantic coverage
-     of the corpus before applying approaches 1 or 2.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Q4: What thresholds would you set for production, and what metrics would you add
-    beyond RAGAS?
-
-Production thresholds (empirically calibrated for this supply chain domain):
-  - Faithfulness       > 0.80   hard requirement — hallucination guard
-  - Answer Relevance   > 0.75
-  - Context Precision  > 0.60
-  - Context Recall     > 0.70   (requires ground truth)
-
-Beyond RAGAS:
-  - Hit Rate @k: did the correct source document appear anywhere in the top-k
-    retrieved chunks? Measures retrieval coverage independent of ranking.
-  - MRR (Mean Reciprocal Rank): where in the ranking did the first correct chunk
-    appear? 1/rank — rewards systems that surface the right evidence at position 1.
-  - Router Accuracy: for this multi-intent system, does the intent classifier
-    correctly route document queries to the document handler? Misrouting to
-    "query" or "action" bypasses RAG entirely.
-  - Hallucination Guard: pattern check for refusal markers ("I don't have
-    information", "not mentioned in the provided documents") — flags correct
-    abstentions on unanswerable questions and catches silent hallucinations.
-  - Latency p95: end-to-end query latency at the 95th percentile. RAGAS scores
-    are irrelevant if the system cannot respond within SLA in production.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-"""
-
-# ─── Path fix ───────────────────────────────────────────────────────────────
-# get_vector_store() uses the relative path r"2026\networkx-mua\docs_folder".
-# We must chdir to the repo root BEFORE importing any local modules.
 import os
 import sys
 
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))          # …/networkx-mua
-REPO_ROOT  = os.path.abspath(os.path.join(SCRIPT_DIR, "..", ".."))  # C:/portfolio
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))          
+REPO_ROOT  = os.path.abspath(os.path.join(SCRIPT_DIR, "..", "..")) 
 os.chdir(REPO_ROOT)
 sys.path.insert(0, SCRIPT_DIR)
 
-# ─── Standard imports ───────────────────────────────────────────────────────
+
 import argparse
 import json
 import re
@@ -118,15 +20,12 @@ from groq import Groq
 
 load_dotenv(os.path.join(SCRIPT_DIR, ".env"))
 
-# Local modules (importable now that SCRIPT_DIR is on sys.path)
 from embedding import get_vector_store
 from llm_router import llm_router
 from retrieval import search_docs
 
-# ─── TEST DATASET ────────────────────────────────────────────────────────────
 
 TEST_DATASET: List[Dict[str, Any]] = [
-    # ── Single-document: tata_steel_contract.md ──────────────────────────────
     {
         "id": "T01",
         "category": "single_doc",
@@ -248,7 +147,6 @@ TEST_DATASET: List[Dict[str, Any]] = [
         "expected_intent": "document",
         "top_k": 7,
     },
-    # ── Unanswerable ─────────────────────────────────────────────────────────
     {
         "id": "T13",
         "category": "unanswerable",
@@ -278,7 +176,6 @@ TEST_DATASET: List[Dict[str, Any]] = [
     },
 ]
 
-# ─── Prompts ─────────────────────────────────────────────────────────────────
 
 ANSWER_PROMPT = """\
 You are a supply chain expert assistant. Answer the user's question based ONLY \
@@ -352,9 +249,7 @@ Context:
 
 Answer (YES or NO):"""
 
-# ─── LLM backend ─────────────────────────────────────────────────────────────
-# All metric functions accept an LLMCallable — a plain (prompt: str) -> str
-# function. Use the factories below to build one for your chosen backend.
+
 
 LLMCallable = Callable[[str], str]
 
@@ -407,7 +302,6 @@ def call_llm(llm: LLMCallable, prompt: str) -> str:
 
 def _parse_json_list(text: str, fallback_split: str = "\n") -> List[str]:
     """Parse a JSON array from LLM output, with line-by-line fallback."""
-    # Try to find a JSON array in the text
     match = re.search(r"\[.*?\]", text, re.DOTALL)
     if match:
         try:
@@ -416,30 +310,17 @@ def _parse_json_list(text: str, fallback_split: str = "\n") -> List[str]:
                 return [str(item).strip() for item in result if str(item).strip()]
         except json.JSONDecodeError:
             pass
-    # Fallback: split on newlines and strip bullets/numbering
     lines = [re.sub(r"^[\d\.\-\*\s]+", "", ln).strip() for ln in text.split(fallback_split)]
     return [ln for ln in lines if ln]
 
 
-# ─── RAG pipeline (adds generation step missing from orchestrator.py) ─────────
 
 def run_rag_pipeline(
     question: str,
     llm: LLMCallable,
     top_k: int = 3,
 ) -> Dict[str, Any]:
-    """
-    Retrieves chunks and generates an answer with Groq.
 
-    Returns:
-        {
-            "question": str,
-            "answer": str,
-            "chunks": List[Dict],   # [{text, source, section, score}]
-            "context": str,         # concatenated chunk texts
-            "latency_s": float,
-        }
-    """
     t0 = time.perf_counter()
     chunks = search_docs(question, top_k=top_k)
 
@@ -460,23 +341,13 @@ def run_rag_pipeline(
     }
 
 
-# ─── Metric 1: Faithfulness ──────────────────────────────────────────────────
 
 def faithfulness_score(
     answer: str,
     context: str,
     llm: LLMCallable,
 ) -> Tuple[float, Dict[str, Any]]:
-    """
-    Algorithm:
-      1. Extract atomic claims from the answer via LLM.
-      2. For each claim, ask the LLM whether it is supported by the context.
-      3. score = supported_claims / total_claims
 
-    Correct refusals (unanswerable questions where the model says "I don't have
-    information") are assigned a score of 1.0 by convention — they are the right
-    behaviour and contain no hallucinated claims.
-    """
     refusal_markers = [
         "i don't have enough information",
         "i don't have information",
@@ -487,14 +358,12 @@ def faithfulness_score(
     if any(m in answer.lower() for m in refusal_markers):
         return 1.0, {"claims": [], "supported": 0, "total": 0, "note": "correct_refusal"}
 
-    # Step 1: extract claims
     raw = call_llm(llm, CLAIMS_EXTRACT_PROMPT.format(answer=answer))
     claims = _parse_json_list(raw)
 
     if not claims:
         return 0.0, {"claims": [], "supported": 0, "total": 0, "note": "no_claims_extracted"}
 
-    # Step 2: verify each claim
     supported = []
     for claim in claims:
         verdict = call_llm(
@@ -512,22 +381,13 @@ def faithfulness_score(
     }
 
 
-# ─── Metric 2: Answer Relevance ──────────────────────────────────────────────
 
 def answer_relevance_score(
     question: str,
     answer: str,
     llm: LLMCallable,
 ) -> Tuple[float, Dict[str, Any]]:
-    """
-    Algorithm:
-      1. Generate 3 synthetic questions from the answer via LLM.
-      2. Embed the original question and each synthetic question using the same
-         all-MiniLM-L6-v2 model that powers the vector store.
-      3. score = mean cosine similarity between original and synthetic questions.
-
-    Correct refusals are assigned 0.95 by convention.
-    """
+    
     refusal_markers = [
         "i don't have enough information",
         "i don't have information",
@@ -563,22 +423,13 @@ def answer_relevance_score(
     }
 
 
-# ─── Metric 3: Context Precision ─────────────────────────────────────────────
 
 def context_precision_score(
     question: str,
     chunks: List[Dict],
     llm: LLMCallable,
 ) -> Tuple[float, Dict[str, Any]]:
-    """
-    Algorithm (Average Precision):
-      1. For each retrieved chunk (in rank order), ask LLM: relevant? YES/NO.
-      2. AP = (1/|R|) * sum_{k where rank_k is relevant} Precision@k
-         where Precision@k = (relevant in top-k) / k
-      3. If no chunks are relevant, AP = 0.0.
-
-    AP rewards systems that rank relevant chunks higher.
-    """
+   
     if not chunks:
         return 0.0, {"ranked_relevance": [], "num_relevant": 0}
 
@@ -606,21 +457,13 @@ def context_precision_score(
     return ap, {"ranked_relevance": relevance, "num_relevant": num_relevant}
 
 
-# ─── Metric 4: Context Recall ─────────────────────────────────────────────────
 
 def context_recall_score(
     ground_truth: Optional[str],
     context: str,
     llm: LLMCallable,
 ) -> Tuple[float, Dict[str, Any]]:
-    """
-    Algorithm:
-      1. Split ground truth into individual sentences.
-      2. For each sentence, ask LLM: is it supported by the context? YES/NO.
-      3. score = supported_sentences / total_sentences
 
-    Returns (1.0, note="no_ground_truth") when GT is None (unanswerable cases).
-    """
     if not ground_truth:
         return 1.0, {"sentences": [], "supported": 0, "total": 0, "note": "no_ground_truth"}
 
@@ -647,17 +490,13 @@ def context_recall_score(
     }
 
 
-# ─── Extra metrics ────────────────────────────────────────────────────────────
 
 def hit_rate_at_k(
     chunks: List[Dict],
     expected_sources: List[str],
     k: Optional[int] = None,
 ) -> float:
-    """
-    Returns 1.0 if any expected source appears in the top-k retrieved chunks,
-    0.0 otherwise. If k is None, checks all returned chunks.
-    """
+
     if not expected_sources:
         return 1.0  # unanswerable — no source expected
     candidates = chunks[:k] if k else chunks
@@ -669,10 +508,7 @@ def mean_reciprocal_rank(
     chunks: List[Dict],
     expected_sources: List[str],
 ) -> float:
-    """
-    Returns 1/rank of the first chunk whose source matches an expected source.
-    Returns 0.0 if no match found.
-    """
+
     if not expected_sources:
         return 1.0  # unanswerable — not penalised
     for rank, chunk in enumerate(chunks, start=1):
@@ -682,16 +518,12 @@ def mean_reciprocal_rank(
 
 
 def check_router_accuracy(question: str, expected_intent: str) -> bool:
-    """Calls the existing llm_router and compares against expected intent."""
     result = llm_router({"query": question})
     return result.get("intent") == expected_intent
 
 
 def check_hallucination(answer: str) -> bool:
-    """
-    Returns True if the answer contains a proper refusal marker, indicating
-    the model correctly abstained rather than hallucinating.
-    """
+
     markers = [
         "i don't have enough information",
         "i don't have information",
@@ -705,7 +537,6 @@ def check_hallucination(answer: str) -> bool:
     return any(m in lower for m in markers)
 
 
-# ─── RAGAS library comparison (optional) ─────────────────────────────────────
 
 def run_ragas_eval(
     rag_results: List[Dict[str, Any]],
@@ -713,15 +544,7 @@ def run_ragas_eval(
     backend: str = "groq",
     model: Optional[str] = None,
 ) -> Optional[Dict[str, float]]:
-    """
-    Runs the official RAGAS library over the same results for comparison.
-    Skips gracefully if ragas or its dependencies are not installed.
 
-    Install (Groq):
-        pip install ragas langchain-groq langchain-huggingface
-    Install (Ollama):
-        pip install ragas langchain-ollama langchain-huggingface
-    """
     try:
         from datasets import Dataset
         from langchain_huggingface import HuggingFaceEmbeddings
@@ -751,9 +574,9 @@ def run_ragas_eval(
     for res, tc in zip(rag_results, test_cases):
         if tc["category"] == "unanswerable":
             continue
-        rows["question"].append(tc["question"])                          # fix: was res["question"]
+        rows["question"].append(tc["question"])                          
         rows["answer"].append(res["answer"])
-        rows["contexts"].append([c["text"] for c in res["chunks"]])     # text preserved in chunks
+        rows["contexts"].append([c["text"] for c in res["chunks"]])     
         rows["ground_truth"].append(tc["ground_truth"] or "")
 
     if not rows["question"]:
@@ -800,7 +623,6 @@ def run_ragas_eval(
         return None
 
 
-# ─── Report generation ────────────────────────────────────────────────────────
 
 THRESHOLDS = {
     "faithfulness": 0.80,
@@ -823,14 +645,12 @@ def _fmt(val: Optional[float], threshold: Optional[float] = None) -> str:
 
 
 def generate_report(results: List[Dict[str, Any]]) -> None:
-    """Prints a full evaluation report: per-case breakdown + aggregate table."""
     sep = "=" * 90
 
     print(f"\n{sep}")
     print("  EVALUATION REPORT — networkx-mua RAG System")
     print(sep)
 
-    # ── Per-question breakdown ────────────────────────────────────────────────
     print("\nPER-QUESTION BREAKDOWN")
     print("-" * 90)
     header = f"{'ID':<5} {'Cat':<12} {'Faith':>7} {'Rel':>7} {'Prec':>7} {'Recall':>7} {'HR@k':>6} {'MRR':>6} {'Rtr':>5} {'Lat':>6}"
@@ -852,7 +672,6 @@ def generate_report(results: List[Dict[str, Any]]) -> None:
             f"{r.get('latency_s', 0):.2f}s"
         )
 
-    # ── Aggregate table ───────────────────────────────────────────────────────
     def _agg(results_subset: List[Dict], key: str) -> Optional[float]:
         vals = [r["metrics"].get(key) for r in results_subset if r["metrics"].get(key) is not None]
         return float(np.mean(vals)) if vals else None
@@ -888,7 +707,6 @@ def generate_report(results: List[Dict[str, Any]]) -> None:
             f"{_fmt(v_multi, threshold):>13}"
         )
 
-    # Router accuracy row
     router_correct = sum(1 for r in results if r["metrics"].get("router_correct"))
     router_acc = router_correct / len(results) if results else 0.0
     print(
@@ -896,14 +714,13 @@ def generate_report(results: List[Dict[str, Any]]) -> None:
         f"{_fmt(router_acc, THRESHOLDS['router_accuracy']):>12}"
     )
 
-    # Hallucination guard (unanswerable cases only)
     unans = [r for r in results if r["test_case"]["category"] == "unanswerable"]
     if unans:
         correct_refusals = sum(1 for r in unans if r["metrics"].get("is_refusal"))
         refusal_rate = correct_refusals / len(unans)
         print(f"{'hallucination_guard':<22} {'1.00':>10} {_fmt(refusal_rate, 1.0):>12}  (unanswerable n={len(unans)})")
 
-    # Latency
+    
     lats = [r.get("latency_s", 0) for r in results]
     if lats:
         lat_p95 = float(np.percentile(lats, 95))
@@ -911,7 +728,6 @@ def generate_report(results: List[Dict[str, Any]]) -> None:
         print(f"\n{'Latency mean':<22} {'':>10} {lat_mean:>10.2f}s")
         print(f"{'Latency p95':<22} {'':>10} {lat_p95:>10.2f}s")
 
-    # ── Failure analysis ──────────────────────────────────────────────────────
     print(f"\n{sep}")
     print("FAILURE ANALYSIS")
     print("-" * 90)
@@ -948,7 +764,6 @@ def generate_report(results: List[Dict[str, Any]]) -> None:
     print(sep)
 
 
-# ─── Main ─────────────────────────────────────────────────────────────────────
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="RAG eval pipeline for networkx-mua")
@@ -976,7 +791,6 @@ def main() -> None:
 
     print(f"Working directory: {os.getcwd()}")
 
-    # ── Generation LLM ────────────────────────────────────────────────────────
     if args.backend == "ollama":
         gen_llm = make_ollama_llm(args.model or DEFAULT_OLLAMA_MODEL)
         gen_label = f"ollama/{args.model or DEFAULT_OLLAMA_MODEL}"
@@ -984,7 +798,6 @@ def main() -> None:
         gen_llm = make_groq_llm(args.model or DEFAULT_GROQ_MODEL)
         gen_label = f"groq/{args.model or DEFAULT_GROQ_MODEL}"
 
-    # ── Judge LLM (may differ from generator) ────────────────────────────────
     judge_backend = args.judge_backend or args.backend
     if judge_backend == "ollama":
         judge_model = args.judge_model or args.model or DEFAULT_OLLAMA_MODEL
@@ -1000,7 +813,6 @@ def main() -> None:
     print("Warming up vector store (builds on first call)...")
     get_vector_store()
 
-    # keep llm as alias for backward-compat with RAGAS helper
     llm = gen_llm
 
     results: List[Dict[str, Any]] = []
@@ -1012,10 +824,8 @@ def main() -> None:
     for tc in TEST_DATASET:
         print(f"{tc['id']:<5} ", end="", flush=True)
 
-        # 1. RAG pipeline (generation LLM)
         rag = run_rag_pipeline(tc["question"], gen_llm, top_k=tc["top_k"])
 
-        # 2. Compute metrics (judge LLM)
         faith, faith_detail = faithfulness_score(rag["answer"], rag["context"], judge_llm)
         rel,   rel_detail   = answer_relevance_score(tc["question"], rag["answer"], judge_llm)
         prec,  prec_detail  = context_precision_score(tc["question"], rag["chunks"], judge_llm)
@@ -1069,10 +879,8 @@ def main() -> None:
             f"router={'Y' if router_ok else 'N'} [{flag}]"
         )
 
-    # 3. RAGAS library comparison
     ragas_scores = run_ragas_eval(results, TEST_DATASET, backend=args.backend, model=args.model)
 
-    # 4. Save results
     output_path = os.path.join(SCRIPT_DIR, "eval_results.json")
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(
@@ -1093,7 +901,6 @@ def main() -> None:
         )
     print(f"\nResults saved to: {output_path}")
 
-    # 5. Full report
     generate_report(results)
 
 
