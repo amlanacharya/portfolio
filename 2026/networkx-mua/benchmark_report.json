@@ -1,0 +1,1435 @@
+{
+  "router": [
+    {
+      "label": "ollama/llama3.1:8b",
+      "backend": "ollama",
+      "model": "llama3.1:8b",
+      "skipped": false,
+      "n_queries": 40,
+      "n_runs": 3,
+      "intent_accuracy": 0.8,
+      "entity_accuracy": 0.825,
+      "entity_accuracy_nondoc": 0.781,
+      "combined_accuracy": 0.8,
+      "json_parse_rate": 0.925,
+      "consistency": 0.933,
+      "latency_p50": 4.714,
+      "latency_p95": 5.699,
+      "latency_p99": 13.746,
+      "failures": [
+        {
+          "id": "R07",
+          "category": "query",
+          "got_intent": "document",
+          "got_node_id": "unknown"
+        },
+        {
+          "id": "R17",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R25",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R27",
+          "category": "action",
+          "got_intent": "document",
+          "got_node_id": "unknown"
+        },
+        {
+          "id": "R28",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R37",
+          "category": "edge_multi_intent",
+          "got_intent": "document",
+          "got_node_id": "unknown"
+        },
+        {
+          "id": "R38",
+          "category": "edge_ood",
+          "got_intent": "query",
+          "got_node_id": "factory_1"
+        },
+        {
+          "id": "R39",
+          "category": "edge_ambiguous",
+          "got_intent": "query",
+          "got_node_id": "unknown"
+        }
+      ]
+    },
+    {
+      "label": "ollama/mistral:7b",
+      "backend": "ollama",
+      "model": "mistral:7b",
+      "skipped": false,
+      "n_queries": 40,
+      "n_runs": 3,
+      "intent_accuracy": 0.2,
+      "entity_accuracy": 0.2,
+      "entity_accuracy_nondoc": 0.062,
+      "combined_accuracy": 0.175,
+      "json_parse_rate": 0.225,
+      "consistency": 0.992,
+      "latency_p50": 3.313,
+      "latency_p95": 5.901,
+      "latency_p99": 6.623,
+      "failures": [
+        {
+          "id": "R01",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R02",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R03",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R04",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R05",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R06",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R07",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R08",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R09",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R10",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R11",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R12",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R13",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R14",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R15",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R16",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R17",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R18",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R19",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R20",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R21",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R22",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R23",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R24",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R25",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R26",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R27",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R28",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R29",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R30",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R38",
+          "category": "edge_ood",
+          "got_intent": "query",
+          "got_node_id": "unknown"
+        },
+        {
+          "id": "R39",
+          "category": "edge_ambiguous",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R40",
+          "category": "edge_multi_entity",
+          "got_intent": "query",
+          "got_node_id": "unknown"
+        }
+      ]
+    },
+    {
+      "label": "ollama/phi3:3.8b",
+      "backend": "ollama",
+      "model": "phi3:3.8b",
+      "skipped": false,
+      "n_queries": 40,
+      "n_runs": 3,
+      "intent_accuracy": 0.0,
+      "entity_accuracy": 0.0,
+      "entity_accuracy_nondoc": 0.0,
+      "combined_accuracy": 0.0,
+      "json_parse_rate": 0.0,
+      "consistency": 1.0,
+      "latency_p50": 0.0,
+      "latency_p95": 0.0,
+      "latency_p99": 0.0,
+      "failures": [
+        {
+          "id": "R01",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R02",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R03",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R04",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R05",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R06",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R07",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R08",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R09",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R10",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R11",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R12",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R13",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R14",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R15",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R16",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R17",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R18",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R19",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R20",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R21",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R22",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R23",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R24",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R25",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R26",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R27",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R28",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R29",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R30",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R31",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R32",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R33",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R34",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R35",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R36",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R37",
+          "category": "edge_multi_intent",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R38",
+          "category": "edge_ood",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R39",
+          "category": "edge_ambiguous",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R40",
+          "category": "edge_multi_entity",
+          "got_intent": null,
+          "got_node_id": null
+        }
+      ]
+    },
+    {
+      "label": "ollama/gemma2:9b",
+      "backend": "ollama",
+      "model": "gemma2:9b",
+      "skipped": false,
+      "n_queries": 40,
+      "n_runs": 3,
+      "intent_accuracy": 0.0,
+      "entity_accuracy": 0.0,
+      "entity_accuracy_nondoc": 0.0,
+      "combined_accuracy": 0.0,
+      "json_parse_rate": 0.0,
+      "consistency": 1.0,
+      "latency_p50": 0.0,
+      "latency_p95": 0.0,
+      "latency_p99": 0.0,
+      "failures": [
+        {
+          "id": "R01",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R02",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R03",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R04",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R05",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R06",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R07",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R08",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R09",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R10",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R11",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R12",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R13",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R14",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R15",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R16",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R17",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R18",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R19",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R20",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R21",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R22",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R23",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R24",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R25",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R26",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R27",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R28",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R29",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R30",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R31",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R32",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R33",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R34",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R35",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R36",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R37",
+          "category": "edge_multi_intent",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R38",
+          "category": "edge_ood",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R39",
+          "category": "edge_ambiguous",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R40",
+          "category": "edge_multi_entity",
+          "got_intent": null,
+          "got_node_id": null
+        }
+      ]
+    },
+    {
+      "label": "groq/llama-3.1-8b-instant",
+      "backend": "groq",
+      "model": "llama-3.1-8b-instant",
+      "skipped": false,
+      "n_queries": 40,
+      "n_runs": 3,
+      "intent_accuracy": 0.9,
+      "entity_accuracy": 0.925,
+      "entity_accuracy_nondoc": 0.906,
+      "combined_accuracy": 0.9,
+      "json_parse_rate": 0.975,
+      "consistency": 1.0,
+      "latency_p50": 6.386,
+      "latency_p95": 7.934,
+      "latency_p99": 7.994,
+      "failures": [
+        {
+          "id": "R07",
+          "category": "query",
+          "got_intent": "document",
+          "got_node_id": "unknown"
+        },
+        {
+          "id": "R27",
+          "category": "action",
+          "got_intent": "document",
+          "got_node_id": "unknown"
+        },
+        {
+          "id": "R38",
+          "category": "edge_ood",
+          "got_intent": "query",
+          "got_node_id": "unknown"
+        },
+        {
+          "id": "R39",
+          "category": "edge_ambiguous",
+          "got_intent": null,
+          "got_node_id": null
+        }
+      ]
+    },
+    {
+      "label": "groq/mixtral-8x7b-32768",
+      "backend": "groq",
+      "model": "mixtral-8x7b-32768",
+      "skipped": false,
+      "n_queries": 40,
+      "n_runs": 3,
+      "intent_accuracy": 0.0,
+      "entity_accuracy": 0.0,
+      "entity_accuracy_nondoc": 0.0,
+      "combined_accuracy": 0.0,
+      "json_parse_rate": 0.0,
+      "consistency": 1.0,
+      "latency_p50": 0.0,
+      "latency_p95": 0.0,
+      "latency_p99": 0.0,
+      "failures": [
+        {
+          "id": "R01",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R02",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R03",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R04",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R05",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R06",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R07",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R08",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R09",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R10",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R11",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R12",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R13",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R14",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R15",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R16",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R17",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R18",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R19",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R20",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R21",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R22",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R23",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R24",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R25",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R26",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R27",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R28",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R29",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R30",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R31",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R32",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R33",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R34",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R35",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R36",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R37",
+          "category": "edge_multi_intent",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R38",
+          "category": "edge_ood",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R39",
+          "category": "edge_ambiguous",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R40",
+          "category": "edge_multi_entity",
+          "got_intent": null,
+          "got_node_id": null
+        }
+      ]
+    },
+    {
+      "label": "groq/gemma2-9b-it",
+      "backend": "groq",
+      "model": "gemma2-9b-it",
+      "skipped": false,
+      "n_queries": 40,
+      "n_runs": 3,
+      "intent_accuracy": 0.0,
+      "entity_accuracy": 0.0,
+      "entity_accuracy_nondoc": 0.0,
+      "combined_accuracy": 0.0,
+      "json_parse_rate": 0.0,
+      "consistency": 1.0,
+      "latency_p50": 0.0,
+      "latency_p95": 0.0,
+      "latency_p99": 0.0,
+      "failures": [
+        {
+          "id": "R01",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R02",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R03",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R04",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R05",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R06",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R07",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R08",
+          "category": "query",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R09",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R10",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R11",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R12",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R13",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R14",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R15",
+          "category": "rca",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R16",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R17",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R18",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R19",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R20",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R21",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R22",
+          "category": "simulate",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R23",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R24",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R25",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R26",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R27",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R28",
+          "category": "action",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R29",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R30",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R31",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R32",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R33",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R34",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R35",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R36",
+          "category": "document",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R37",
+          "category": "edge_multi_intent",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R38",
+          "category": "edge_ood",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R39",
+          "category": "edge_ambiguous",
+          "got_intent": null,
+          "got_node_id": null
+        },
+        {
+          "id": "R40",
+          "category": "edge_multi_entity",
+          "got_intent": null,
+          "got_node_id": null
+        }
+      ]
+    }
+  ],
+  "embedding": [
+    {
+      "label": "sentence_transformers/all-MiniLM-L6-v2",
+      "backend": "sentence_transformers",
+      "model": "all-MiniLM-L6-v2",
+      "skipped": false,
+      "n_queries": 12,
+      "hit_rate_at_3": 1.0,
+      "mrr": 1.0,
+      "avg_top1_score": 0.653,
+      "latency_p50": 0.006,
+      "latency_p95": 0.011
+    },
+    {
+      "label": "sentence_transformers/BAAI/bge-small-en-v1.5",
+      "backend": "sentence_transformers",
+      "model": "BAAI/bge-small-en-v1.5",
+      "skipped": false,
+      "n_queries": 12,
+      "hit_rate_at_3": 1.0,
+      "mrr": 1.0,
+      "avg_top1_score": 0.796,
+      "latency_p50": 0.013,
+      "latency_p95": 0.015
+    },
+    {
+      "label": "sentence_transformers/BAAI/bge-large-en-v1.5",
+      "backend": "sentence_transformers",
+      "model": "BAAI/bge-large-en-v1.5",
+      "skipped": false,
+      "n_queries": 12,
+      "hit_rate_at_3": 1.0,
+      "mrr": 1.0,
+      "avg_top1_score": 0.749,
+      "latency_p50": 0.048,
+      "latency_p95": 0.055
+    },
+    {
+      "label": "ollama/nomic-embed-text",
+      "backend": "ollama",
+      "model": "nomic-embed-text",
+      "skipped": true
+    },
+    {
+      "label": "openrouter/openai/text-embedding-3-small",
+      "backend": "openrouter",
+      "model": "openai/text-embedding-3-small",
+      "skipped": false,
+      "n_queries": 12,
+      "hit_rate_at_3": 1.0,
+      "mrr": 0.958,
+      "avg_top1_score": 0.632,
+      "latency_p50": 0.703,
+      "latency_p95": 1.028
+    },
+    {
+      "label": "openrouter/openai/text-embedding-3-large",
+      "backend": "openrouter",
+      "model": "openai/text-embedding-3-large",
+      "skipped": false,
+      "n_queries": 12,
+      "hit_rate_at_3": 1.0,
+      "mrr": 0.958,
+      "avg_top1_score": 0.626,
+      "latency_p50": 0.747,
+      "latency_p95": 0.889
+    }
+  ]
+}

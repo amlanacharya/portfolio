@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:blog.langchain.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:deepgram.com)",
+      "WebFetch(domain:azure.microsoft.com)",
+      "Bash(python:*)",
+      "WebFetch(domain:docs.pageindex.ai)",
+      "WebFetch(domain:api.pageindex.ai)"
+    ]
+  }
+}

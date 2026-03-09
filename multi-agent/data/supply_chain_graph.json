@@ -1,0 +1,200 @@
+{
+  "nodes": [
+    {
+      "id": "factory_A",
+      "type": "factory",
+      "label": "Factory A (Chennai)",
+      "capacity": 1000,
+      "utilization": 0.72,
+      "status": "operational",
+      "region": "South India"
+    },
+    {
+      "id": "factory_B",
+      "type": "factory",
+      "label": "Factory B (Pune)",
+      "capacity": 800,
+      "utilization": 0.91,
+      "status": "at_risk",
+      "region": "West India",
+      "risk_note": "Labor dispute reported, 15% slowdown expected"
+    },
+    {
+      "id": "factory_C",
+      "type": "factory",
+      "label": "Factory C (Kolkata)",
+      "capacity": 600,
+      "utilization": 0.45,
+      "status": "operational",
+      "region": "East India"
+    },
+    {
+      "id": "vendor_X",
+      "type": "vendor",
+      "label": "Vendor X - Raw Steel (Jamshedpur)",
+      "reliability_score": 0.62,
+      "status": "delayed",
+      "delay_days": 7,
+      "delay_reason": "Port congestion at Haldia",
+      "supplies": ["factory_A", "factory_B"]
+    },
+    {
+      "id": "vendor_Y",
+      "type": "vendor",
+      "label": "Vendor Y - Electronics (Shenzhen)",
+      "reliability_score": 0.88,
+      "status": "operational",
+      "supplies": ["factory_B", "factory_C"]
+    },
+    {
+      "id": "vendor_Z",
+      "type": "vendor",
+      "label": "Vendor Z - Packaging (Mumbai)",
+      "reliability_score": 0.95,
+      "status": "operational",
+      "supplies": ["factory_A", "factory_C"]
+    },
+    {
+      "id": "route_1",
+      "type": "route",
+      "label": "Route 1: Chennai → Delhi (Road)",
+      "mode": "road",
+      "avg_transit_days": 4,
+      "current_delay_days": 2,
+      "status": "delayed",
+      "delay_reason": "NH-44 flooding near Nagpur",
+      "from": "factory_A",
+      "to": "dc_north"
+    },
+    {
+      "id": "route_2",
+      "type": "route",
+      "label": "Route 2: Pune → Delhi (Rail)",
+      "mode": "rail",
+      "avg_transit_days": 3,
+      "current_delay_days": 0,
+      "status": "operational",
+      "from": "factory_B",
+      "to": "dc_north"
+    },
+    {
+      "id": "route_3",
+      "type": "route",
+      "label": "Route 3: Kolkata → Delhi (Air)",
+      "mode": "air",
+      "avg_transit_days": 1,
+      "current_delay_days": 0,
+      "status": "operational",
+      "cost_multiplier": 3.5,
+      "from": "factory_C",
+      "to": "dc_north"
+    },
+    {
+      "id": "route_4",
+      "type": "route",
+      "label": "Route 4: Chennai → Mumbai (Road)",
+      "mode": "road",
+      "avg_transit_days": 2,
+      "current_delay_days": 0,
+      "status": "operational",
+      "from": "factory_A",
+      "to": "dc_west"
+    },
+    {
+      "id": "dc_north",
+      "type": "distribution_center",
+      "label": "DC North (Delhi)",
+      "region": "North India",
+      "inventory_days": 3.2,
+      "status": "low_stock",
+      "threshold_days": 5
+    },
+    {
+      "id": "dc_west",
+      "type": "distribution_center",
+      "label": "DC West (Mumbai)",
+      "region": "West India",
+      "inventory_days": 8.1,
+      "status": "operational",
+      "threshold_days": 5
+    },
+    {
+      "id": "dc_south",
+      "type": "distribution_center",
+      "label": "DC South (Bangalore)",
+      "region": "South India",
+      "inventory_days": 6.4,
+      "status": "operational",
+      "threshold_days": 5
+    },
+    {
+      "id": "product_P1",
+      "type": "product",
+      "label": "Product P1 - Industrial Motors",
+      "sku": "IND-MOT-001",
+      "status": "delayed",
+      "produced_at": ["factory_A", "factory_B"],
+      "primary_components": ["vendor_X", "vendor_Y"]
+    },
+    {
+      "id": "product_P2",
+      "type": "product",
+      "label": "Product P2 - Control Panels",
+      "sku": "CTRL-PNL-002",
+      "status": "operational",
+      "produced_at": ["factory_C"],
+      "primary_components": ["vendor_Y", "vendor_Z"]
+    }
+  ],
+  "edges": [
+    {"source": "vendor_X", "target": "factory_A", "relationship": "supplies", "material": "raw_steel"},
+    {"source": "vendor_X", "target": "factory_B", "relationship": "supplies", "material": "raw_steel"},
+    {"source": "vendor_Y", "target": "factory_B", "relationship": "supplies", "material": "electronics"},
+    {"source": "vendor_Y", "target": "factory_C", "relationship": "supplies", "material": "electronics"},
+    {"source": "vendor_Z", "target": "factory_A", "relationship": "supplies", "material": "packaging"},
+    {"source": "vendor_Z", "target": "factory_C", "relationship": "supplies", "material": "packaging"},
+    {"source": "factory_A", "target": "product_P1", "relationship": "produces"},
+    {"source": "factory_B", "target": "product_P1", "relationship": "produces"},
+    {"source": "factory_C", "target": "product_P2", "relationship": "produces"},
+    {"source": "factory_A", "target": "route_1", "relationship": "uses_route"},
+    {"source": "factory_A", "target": "route_4", "relationship": "uses_route"},
+    {"source": "factory_B", "target": "route_2", "relationship": "uses_route"},
+    {"source": "factory_C", "target": "route_3", "relationship": "uses_route"},
+    {"source": "route_1", "target": "dc_north", "relationship": "delivers_to"},
+    {"source": "route_2", "target": "dc_north", "relationship": "delivers_to"},
+    {"source": "route_3", "target": "dc_north", "relationship": "delivers_to"},
+    {"source": "route_4", "target": "dc_west", "relationship": "delivers_to"},
+    {"source": "product_P1", "target": "dc_north", "relationship": "stocked_at"},
+    {"source": "product_P2", "target": "dc_west", "relationship": "stocked_at"},
+    {"source": "product_P2", "target": "dc_south", "relationship": "stocked_at"}
+  ],
+  "events": [
+    {
+      "id": "event_001",
+      "type": "weather",
+      "label": "NH-44 Flooding",
+      "affected_nodes": ["route_1"],
+      "severity": "medium",
+      "active": true,
+      "created_at": "2026-02-25"
+    },
+    {
+      "id": "event_002",
+      "type": "port_congestion",
+      "label": "Haldia Port Congestion",
+      "affected_nodes": ["vendor_X"],
+      "severity": "high",
+      "active": true,
+      "created_at": "2026-02-22"
+    },
+    {
+      "id": "event_003",
+      "type": "labor",
+      "label": "Factory B Labor Dispute",
+      "affected_nodes": ["factory_B"],
+      "severity": "medium",
+      "active": true,
+      "created_at": "2026-02-27"
+    }
+  ]
+}
