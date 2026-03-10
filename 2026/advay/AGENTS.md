@@ -20,3 +20,8 @@
 - Never hardcode secrets.
 - Do not change DB schema without a migration plan.
 - Do not silently weaken validation, auth, or audit behavior.
+
+## Phase discipline
+- The repository is currently in Phase 1 foundation setup.
+- Until the phase_1_setup task is completed, do not implement retrieval, Pinecone, LangGraph, document parsing, embeddings, business KPI logic, advanced Streamlit UX, or production workflow logic.
+- If a task request conflicts with Phase 1 scope, follow the task file and refuse the out-of-scope portion.
