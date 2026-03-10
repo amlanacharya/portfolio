@@ -1,0 +1,5 @@
+business_date,branch_code,region,product_type,due_accounts,collected_accounts,due_amount,collected_amount
+2026-03-08,B001,north,personal_loan,100,92,100000,92000
+2026-03-08,B002,south,bike_loan,50,40,50000,40000
+2026-03-09,B001,north,personal_loan,120,108,120000,108000
+2026-03-09,B002,south,bike_loan,60,45,60000,45000

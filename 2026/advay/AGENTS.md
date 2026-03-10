@@ -8,7 +8,7 @@
 ## Required references before coding
 - `2026/advay/docs/blueprint.md`
 - `2026/advay/docs/contracts/tool_contracts.md`
-- `2026/advay/docs/tasks/phase_1_setup.md`
+- `2026/advay/docs/tasks/phase_2_data_backbone.md`
 
 ## Architecture guardrails
 - Business-critical numbers must come from deterministic SQL/tools only.
@@ -22,6 +22,6 @@
 - Do not silently weaken validation, auth, or audit behavior.
 
 ## Phase discipline
-- The repository is currently in Phase 1 foundation setup.
-- Until the phase_1_setup task is completed, do not implement retrieval, Pinecone, LangGraph, document parsing, embeddings, business KPI logic, advanced Streamlit UX, or production workflow logic.
-- If a task request conflicts with Phase 1 scope, follow the task file and refuse the out-of-scope portion.
+- The repository is currently in Phase 2 deterministic data backbone work.
+- Allowed work in this phase: canonical Postgres schema, mock data loading, deterministic KPI tooling, freshness checks, and minimal API/service exposure for those paths.
+- Do not implement Pinecone, embeddings, document parsing, Neo4j traversal logic, LangGraph workflows, policy retrieval, or memory in this phase.

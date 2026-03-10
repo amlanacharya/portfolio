@@ -1,4 +1,4 @@
-"""Health and readiness helpers for the Phase 1 platform."""
+"""Health and readiness helpers for the current platform phase."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ def build_health_payload(settings: Settings) -> dict[str, str]:
     return {
         "status": "ok",
         "service": "advay-api",
-        "phase": "phase_1",
+        "phase": "phase_2",
         "environment": settings.env,
         "version": __version__,
     }
@@ -48,7 +48,7 @@ def build_readiness_payload(settings: Settings) -> tuple[dict[str, object], int]
     payload = {
         "status": "ready" if overall_ok else "degraded",
         "service": "advay-api",
-        "phase": "phase_1",
+        "phase": "phase_2",
         "dependencies": dependencies,
     }
     return payload, 200 if overall_ok else 503
