@@ -2,6 +2,8 @@
 
 Goal: Local-first NBFC enterprise decision platform.
 
+Project root for all implementation paths: `2026/advay`.
+
 Phase 1 scope:
 - FastAPI skeleton
 - Streamlit skeleton

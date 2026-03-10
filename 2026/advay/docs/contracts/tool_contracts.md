@@ -1,5 +1,7 @@
 # Tool Contracts
 
+Project root for implementation: `2026/advay`.
+
 ## get_kpi
 Inputs:
 - metric_name: str

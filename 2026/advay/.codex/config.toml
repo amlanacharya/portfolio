@@ -1,0 +1,6 @@
+model = "gpt-5.3-codex"
+project_root_markers = [".git"]
+project_doc_max_bytes = 65536
+
+[mcp_servers.openaiDeveloperDocs]
+url = "https://developers.openai.com/mcp"
