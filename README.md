@@ -1,5 +1,7 @@
 # Demo Enterprise Projects
 
+[![gitcgr](https://gitcgr.com/badge/amlanacharya/portfolio.svg)](https://gitcgr.com/amlanacharya/portfolio)
+
 This repository contains demo versions of larger enterprise solutions, rebuilt in a simplified form for open sharing.
 The goal is to showcase core functionality, design patterns, and problem‑solving approaches **without including any proprietary or confidential details**.
 
